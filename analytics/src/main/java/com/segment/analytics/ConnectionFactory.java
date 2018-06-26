@@ -30,11 +30,15 @@ public class ConnectionFactory {
    * https://api.segment.io/v1/import}.
    */
   public HttpURLConnection upload(String writeKey) throws IOException {
-    HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
+
+    // TODO: Use js.bytegain.com when done testing. 10.0.2.2 is emulator's route to host's 127.0.0.1
+//    HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
+    HttpURLConnection connection = openConnection("http://10.0.2.2:5001/v1/batch");
+
     connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
     connection.setRequestProperty("Content-Encoding", "gzip");
     connection.setDoOutput(true);
-    connection.setChunkedStreamingMode(0);
+    //connection.setChunkedStreamingMode(0);
     return connection;
   }
 
