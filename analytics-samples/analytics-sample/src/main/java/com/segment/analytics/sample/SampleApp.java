@@ -8,7 +8,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class SampleApp extends Application {
 
   // https://segment.com/segment-engineering/sources/android-test/settings/keys
-  private static final String ANALYTICS_WRITE_KEY = "5m6gbdgho6";
+  //private static final String ANALYTICS_WRITE_KEY = "5m6gbdgho6";
+  private static final String ANALYTICS_WRITE_KEY = "x7sPb4mmoHBesEwwJIa2XPOAGuSuALwk";
 
   @Override
   public void onCreate() {
