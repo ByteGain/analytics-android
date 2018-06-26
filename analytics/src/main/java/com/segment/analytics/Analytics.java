@@ -49,7 +49,10 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.segment.analytics.integrations.AliasPayload;
+import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.BasePayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
@@ -448,6 +451,9 @@ public class Analytics {
     if (shutdown) {
       return;
     }
+
+    Log.i("SampleApp", "Running operation on main thread");
+
     analyticsExecutor.submit(
         new Runnable() {
           @Override
@@ -583,6 +589,45 @@ public class Analytics {
             fillAndEnqueue(builder, finalOptions);
           }
         });
+  }
+
+  public void attemptGoal(
+          final @NonNull String event,
+          final @Nullable Properties properties,
+          @Nullable final Options options) {
+    assertNotShutdown();
+    if (isNullOrEmpty(event)) {
+      throw new IllegalArgumentException("event must not be null or empty.");
+    }
+    Log.i("SampleApp","END ATTEMPT GOAL ##########################################################");
+
+    analyticsExecutor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+
+                final Options finalOptions;
+                if (options == null) {
+                  finalOptions = defaultOptions;
+                } else {
+                  finalOptions = options;
+                }
+
+                final Properties finalProperties;
+                if (properties == null) {
+                  finalProperties = EMPTY_PROPERTIES;
+                } else {
+                  finalProperties = properties;
+                }
+
+                AttemptGoalPayload.Builder builder =
+                        new AttemptGoalPayload.Builder().event(event).properties(finalProperties);
+
+                fillAndEnqueue(builder, finalOptions);
+              }
+            });
+    Log.i("SampleApp","END ATTEMPT GOAL ##########################################################");
+
   }
 
   /** @see #track(String, Properties, Options) */
@@ -786,15 +831,25 @@ public class Analytics {
     builder.context(contextCopy);
     builder.anonymousId(contextCopy.traits().anonymousId());
     builder.integrations(options.integrations());
+
     String userId = contextCopy.traits().userId();
+    Log.i("SampleApp","FILL&ENQUEUE ##########################################################");
+
+
     if (!isNullOrEmpty(userId)) {
       builder.userId(userId);
     }
+    Log.i("SampleApp","FILL&ENQUEUE NEAR_END ##########################################################");
+
     enqueue(builder.build());
+    Log.i("SampleApp","FILL&ENQUEUE END ##########################################################");
+
   }
 
   void enqueue(BasePayload payload) {
     if (optOut.get()) {
+      Log.i("SampleApp","OPTOUT ##########################################################");
+
       return;
     }
     logger.verbose("Created payload %s.", payload);
@@ -820,6 +875,9 @@ public class Analytics {
         break;
       case screen:
         operation = IntegrationOperation.screen((ScreenPayload) payload);
+        break;
+      case attemptGoal:
+        operation = IntegrationOperation.attemptGoal((AttemptGoalPayload) payload);
         break;
       default:
         throw new AssertionError("unknown type " + payload.type());
@@ -1101,6 +1159,8 @@ public class Analytics {
         throw new IllegalArgumentException("writeKey must not be null or empty.");
       }
       this.writeKey = writeKey;
+      Log.i("SampleApp","WriteKey: " + writeKey);
+
     }
 
     /**

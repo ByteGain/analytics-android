@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -60,12 +61,17 @@ public class MainActivity extends Activity {
 
   @OnClick(R.id.action_track_a)
   void onButtonAClicked() {
-    Analytics.with(this).track("Button A Clicked");
+//    Analytics.with(this).track("Button A Clicked");
+    Analytics.with(this).attemptGoal("Attempted Goal", null, null);
+    Log.i("SampleApp","BUTTON A CLICKED ##########################################################");
+
   }
 
   @OnClick(R.id.action_track_b)
   void onButtonBClicked() {
     Analytics.with(this).track("Button B Clicked");
+    Log.i("SampleApp","BUTTON B CLICKED ##########################################################");
+
   }
 
   @OnClick(R.id.action_identify)
@@ -81,6 +87,7 @@ public class MainActivity extends Activity {
   @OnClick(R.id.action_flush)
   void onFlushButtonClicked() {
     Analytics.with(this).flush();
+    Log.i("SampleApp","Flush ##########################################################");
   }
 
   @Override

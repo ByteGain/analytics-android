@@ -6,6 +6,7 @@ import static com.segment.analytics.internal.Utils.isNullOrEmpty;
 import android.app.Activity;
 import android.os.Bundle;
 import com.segment.analytics.integrations.AliasPayload;
+import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
@@ -159,6 +160,23 @@ abstract class IntegrationOperation {
       @Override
       public String toString() {
         return groupPayload.toString();
+      }
+    };
+  }
+
+
+  static IntegrationOperation attemptGoal(final AttemptGoalPayload attemptGoalPayload){
+    return new IntegrationOperation() {
+      @Override
+      void run(String key, Integration<?> integration, ProjectSettings projectSettings) {
+        if (isIntegrationEnabled(attemptGoalPayload.integrations(), key)) {
+          integration.attemptGoal(attemptGoalPayload);
+        }
+      }
+
+      @Override
+      public String toString() {
+        return attemptGoalPayload.toString();
       }
     };
   }

@@ -14,21 +14,27 @@ public class SampleApp extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-
+    Log.i("SampleApp","In onCreate");
     CalligraphyConfig.initDefault(
         new CalligraphyConfig.Builder()
             .setDefaultFontPath("fonts/CircularStd-Book.otf")
             .setFontAttrId(R.attr.fontPath)
             .build());
 
-    // Initialize a new instance of the Analytics client.
+      Log.i("SampleApp","After Calligraphy ##########################################################");
+
+
+      // Initialize a new instance of the Analytics client.
     Analytics.Builder builder =
         new Analytics.Builder(this, ANALYTICS_WRITE_KEY)
             .trackApplicationLifecycleEvents()
             .trackAttributionInformation()
             .recordScreenViews();
 
-    // Set the initialized instance as a globally accessible instance.
+      Log.i("SampleApp","After Builder ##########################################################");
+
+
+      // Set the initialized instance as a globally accessible instance.
     Analytics.setSingletonInstance(builder.build());
 
     // Now anytime you call Analytics.with, the custom instance will be returned.
@@ -44,5 +50,8 @@ public class SampleApp extends Application {
             Log.d("Segment Sample", "Segment integration ready.");
           }
         });
+
+      Log.i("SampleApp","End ##########################################################");
+
   }
 }

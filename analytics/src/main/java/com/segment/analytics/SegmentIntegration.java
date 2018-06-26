@@ -13,7 +13,9 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.JsonWriter;
+import android.util.Log;
 import com.segment.analytics.integrations.AliasPayload;
+import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.BasePayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
@@ -234,6 +236,11 @@ class SegmentIntegration extends Integration<Void> {
   }
 
   @Override
+  public void attemptGoal(AttemptGoalPayload attempt) {
+    dispatchEnqueue(attempt);
+  }
+
+  @Override
   public void alias(AliasPayload alias) {
     dispatchEnqueue(alias);
   }
@@ -353,7 +360,10 @@ class SegmentIntegration extends Integration<Void> {
 
       // Upload the payloads.
       connection.close();
+      Log.i("SampleApp", "Succeeded performFlush()");
+
     } catch (Client.HTTPException e) {
+      Log.i("SampleApp", "Caught HTTPException: " + Log.getStackTraceString(e));
       if (e.is4xx() && e.responseCode != 429) {
         // Simply log and proceed to remove the rejected payloads from the queue.
         logger.error(e, "Payloads were rejected by server. Marked for removal.");
@@ -368,6 +378,7 @@ class SegmentIntegration extends Integration<Void> {
         return;
       }
     } catch (IOException e) {
+      Log.i("SampleApp", "Caught IOException: " + Log.getStackTraceString(e));
       logger.error(e, "Error while uploading payloads");
       return;
     } finally {

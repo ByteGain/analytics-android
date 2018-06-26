@@ -60,6 +60,8 @@ public abstract class Integration<T> {
    */
   public void track(TrackPayload track) {}
 
+  public void attemptGoal(AttemptGoalPayload attemptGoal) {}
+
   /** @see Analytics#alias(String, com.segment.analytics.Options) */
   public void alias(AliasPayload alias) {}
 
