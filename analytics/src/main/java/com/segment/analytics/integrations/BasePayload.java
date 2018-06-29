@@ -162,7 +162,7 @@ public abstract class BasePayload extends ValueMap {
     identify,
     screen,
     track,
-    attemptGoal
+    intervention
   }
 
   /**

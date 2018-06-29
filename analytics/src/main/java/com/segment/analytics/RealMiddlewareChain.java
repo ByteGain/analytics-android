@@ -35,11 +35,8 @@ class RealMiddlewareChain implements Middleware.Chain {
     if (index < middlewares.size()) {
       Middleware.Chain chain = new RealMiddlewareChain(index + 1, payload, middlewares, analytics);
       middlewares.get(index).intercept(chain);
-      Log.i("SampleApp","Index < Middlewsres.size() in proceed(BasePayload) ##########################################################");
-
       return;
     }
-    Log.i("SampleApp","Running Payload " + payload.messageId() + " ##########################################################");
 
     // No more interceptors.
     analytics.run(payload);

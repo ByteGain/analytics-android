@@ -27,21 +27,22 @@ android {
     buildConfigField 'String', 'RUNSCOPE_TOKEN', "\"$RUNSCOPE_TOKEN\""
     buildConfigField 'boolean', 'RUN_E2E_TESTS', "$RUN_E2E_TESTS"
   }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-  implementation project(':analytics')
-  implementation project(':analytics-wear')
-
-  implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
-  implementation 'com.jakewharton:butterknife:8.8.1'
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-  androidTestImplementation 'com.squareup.retrofit2:retrofit:2.3.0'
-  androidTestImplementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
-
-  androidTestImplementation 'com.android.support:support-annotations:27.1.1'
-  androidTestImplementation 'com.android.support.test:runner:1.0.2'
-  androidTestImplementation 'com.android.support.test:rules:1.0.2'
-  androidTestImplementation 'com.segment.backo:backo:1.0.0'
+    implementation project(':analytics')
+    implementation project(':analytics-wear')
+    implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    androidTestImplementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    androidTestImplementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.segment.backo:backo:1.0.0'
 }

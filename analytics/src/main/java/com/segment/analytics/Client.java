@@ -29,6 +29,8 @@ import static com.segment.analytics.internal.Utils.getInputStream;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +65,7 @@ class Client {
             } catch (IOException e) {
               responseBody = "Could not read response body for rejected message: " + e.toString();
             }
+            Log.i("SampleApp", "Server response code: " + responseCode);
             throw new HTTPException(responseCode, connection.getResponseMessage(), responseBody);
           }
         } finally {

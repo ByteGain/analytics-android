@@ -30,6 +30,8 @@ import static com.segment.analytics.internal.Utils.isNullOrEmpty;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.segment.analytics.Properties;
 import com.segment.analytics.internal.Private;
 import java.util.Collections;
@@ -39,8 +41,14 @@ import java.util.Map;
 
 public class AttemptGoalPayload extends BasePayload {
 
-    static final String EVENT_KEY = "Attempted Goal";
+    static final String EVENT_KEY = "intervention";
     static final String PROPERTIES_KEY = "properties";
+
+    private static int responseNumber = 0;
+    private String responseID;
+
+    public final YesCallback yesCallback;
+    public final NoCallback noCallback;
 
     @Private
     AttemptGoalPayload(
@@ -51,10 +59,18 @@ public class AttemptGoalPayload extends BasePayload {
             @Nullable String userId,
             @NonNull String anonymousId,
             @NonNull String event,
-            @NonNull Map<String, Object> properties) {
-        super(Type.attemptGoal, messageId, timestamp, context, integrations, userId, anonymousId);
+            @NonNull Map<String, Object> properties,
+            @NonNull YesCallback yesCallback,          // TODO: Change to @NonNull
+            @Nullable NoCallback noCallback) {
+        super(Type.intervention, messageId, timestamp, context, integrations, userId, anonymousId);
+        responseNumber += 1;
+        responseID = "r" + responseNumber;
         put(EVENT_KEY, event);
         put(PROPERTIES_KEY, properties);
+        put("responseId", responseID);
+
+        this.yesCallback = yesCallback;
+        this.noCallback = noCallback;
     }
 
     /**
@@ -76,6 +92,10 @@ public class AttemptGoalPayload extends BasePayload {
         return getValueMap(PROPERTIES_KEY, Properties.class);
     }
 
+    public String getResponseID() {
+        return responseID;
+    }
+
     @Override
     public String toString() {
         return "AttemptGoalPayload{event=\"" + event() + "\"}";
@@ -87,11 +107,23 @@ public class AttemptGoalPayload extends BasePayload {
         return new Builder(this);
     }
 
+
+    public interface YesCallback {
+        void callback(@Nullable String str);
+    }
+
+    public interface NoCallback {
+        void callback();
+    }
+
     /** Fluent API for creating {@link AttemptGoalPayload} instances. */
     public static class Builder extends BasePayload.Builder<AttemptGoalPayload, Builder> {
 
         private String event;
         private Map<String, Object> properties;
+
+        private YesCallback yesCallback;
+        private NoCallback noCallback;
 
         public Builder() {
             // Empty constructor.
@@ -106,7 +138,7 @@ public class AttemptGoalPayload extends BasePayload {
 
         @NonNull
         public Builder event(@NonNull String event) {
-            this.event = assertNotNullOrEmpty(event, "Attempted Goal");
+            this.event = assertNotNullOrEmpty(event, "intervention");
             return this;
         }
 
@@ -114,6 +146,16 @@ public class AttemptGoalPayload extends BasePayload {
         public Builder properties(@NonNull Map<String, ?> properties) {
             assertNotNull(properties, "properties");
             this.properties = Collections.unmodifiableMap(new LinkedHashMap<>(properties));
+            return this;
+        }
+
+        public Builder yesCallback(@NonNull YesCallback yesCallback) {
+            this.yesCallback = yesCallback;
+            return this;
+        }
+
+        public Builder noCallback(@Nullable NoCallback noCallback) {
+            this.noCallback = noCallback;
             return this;
         }
 
@@ -133,7 +175,7 @@ public class AttemptGoalPayload extends BasePayload {
             }
 
             return new AttemptGoalPayload(
-                    messageId, timestamp, context, integrations, userId, anonymousId, event, properties);
+                    messageId, timestamp, context, integrations, userId, anonymousId, event, properties, yesCallback, noCallback);
         }
 
         @Override

@@ -452,8 +452,6 @@ public class Analytics {
       return;
     }
 
-    Log.i("SampleApp", "Running operation on main thread");
-
     analyticsExecutor.submit(
         new Runnable() {
           @Override
@@ -594,12 +592,13 @@ public class Analytics {
   public void attemptGoal(
           final @NonNull String event,
           final @Nullable Properties properties,
-          @Nullable final Options options) {
+          @Nullable final Options options,
+          @NonNull final AttemptGoalPayload.YesCallback yesCallback,
+          @Nullable final AttemptGoalPayload.NoCallback noCallback) {
     assertNotShutdown();
     if (isNullOrEmpty(event)) {
       throw new IllegalArgumentException("event must not be null or empty.");
     }
-    Log.i("SampleApp","END ATTEMPT GOAL ##########################################################");
 
     analyticsExecutor.submit(
             new Runnable() {
@@ -621,13 +620,12 @@ public class Analytics {
                 }
 
                 AttemptGoalPayload.Builder builder =
-                        new AttemptGoalPayload.Builder().event(event).properties(finalProperties);
+                        new AttemptGoalPayload.Builder().event(event).properties(finalProperties)
+                        .yesCallback(yesCallback).noCallback(noCallback);
 
                 fillAndEnqueue(builder, finalOptions);
               }
             });
-    Log.i("SampleApp","END ATTEMPT GOAL ##########################################################");
-
   }
 
   /** @see #track(String, Properties, Options) */
@@ -833,23 +831,17 @@ public class Analytics {
     builder.integrations(options.integrations());
 
     String userId = contextCopy.traits().userId();
-    Log.i("SampleApp","FILL&ENQUEUE ##########################################################");
-
 
     if (!isNullOrEmpty(userId)) {
       builder.userId(userId);
     }
-    Log.i("SampleApp","FILL&ENQUEUE NEAR_END ##########################################################");
+
 
     enqueue(builder.build());
-    Log.i("SampleApp","FILL&ENQUEUE END ##########################################################");
-
   }
 
   void enqueue(BasePayload payload) {
     if (optOut.get()) {
-      Log.i("SampleApp","OPTOUT ##########################################################");
-
       return;
     }
     logger.verbose("Created payload %s.", payload);
@@ -876,7 +868,7 @@ public class Analytics {
       case screen:
         operation = IntegrationOperation.screen((ScreenPayload) payload);
         break;
-      case attemptGoal:
+      case intervention:
         operation = IntegrationOperation.attemptGoal((AttemptGoalPayload) payload);
         break;
       default:
