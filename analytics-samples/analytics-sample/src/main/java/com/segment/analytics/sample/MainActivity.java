@@ -61,24 +61,26 @@ public class MainActivity extends Activity {
     ButterKnife.bind(this);
   }
 
-  @OnClick(R.id.action_track_a)
-  void onButtonAClicked() {
-//    Analytics.with(this).track("Button A Clicked");
+  @OnClick(R.id.action_attempt_goal)
+  void onButtonAttemptGoalClicked() {
 
-    final AttemptGoalPayload.YesCallback yesCallback = (str) -> {
+    AttemptGoalPayload.YesCallback yesCallback = (str) -> {
       Log.i("SampleApp", "YesCallback was called: " + str);
     };
 
     for (int i = 0; i < 1; i++) {
       Analytics.with(this).attemptGoal("multi", null, null, yesCallback, null);
     }
-    Log.i("SampleApp","BUTTON A CLICKED ##########################################################");
+  }
+
+  @OnClick(R.id.action_track_a)
+  void onButtonAClicked() {
+    Analytics.with(this).track("Button A Clicked");
   }
 
   @OnClick(R.id.action_track_b)
   void onButtonBClicked() {
     Analytics.with(this).track("Button B Clicked");
-    Log.i("SampleApp","BUTTON B CLICKED ##########################################################");
   }
 
   @OnClick(R.id.action_identify)
@@ -94,7 +96,6 @@ public class MainActivity extends Activity {
   @OnClick(R.id.action_flush)
   void onFlushButtonClicked() {
     Analytics.with(this).flush();
-    Log.i("SampleApp","Flush ##########################################################");
   }
 
   @Override

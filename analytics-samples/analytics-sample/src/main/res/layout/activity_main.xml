@@ -39,6 +39,12 @@
       tools:context="com.segment.analytics.sample.MainActivity">
 
     <Button
+        android:id="@+id/action_attempt_goal"
+        android:text="Attempt Goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
         android:id="@+id/action_track_a"
         android:text="@string/button_a"
         android:layout_width="match_parent"

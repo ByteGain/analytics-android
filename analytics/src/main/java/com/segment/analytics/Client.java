@@ -65,7 +65,6 @@ class Client {
             } catch (IOException e) {
               responseBody = "Could not read response body for rejected message: " + e.toString();
             }
-            Log.i("SampleApp", "Server response code: " + responseCode);
             throw new HTTPException(responseCode, connection.getResponseMessage(), responseBody);
           }
         } finally {

@@ -32,6 +32,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -106,6 +107,7 @@ class SegmentIntegration extends Integration<Void> {
   private final ExecutorService networkExecutor;
   private final ScheduledExecutorService flushScheduler;
 
+  // Stores attemptGoalPayloads in order to reference callBacks
   private final HashMap<String, AttemptGoalPayload> attemptGoalPayloads;
   /**
    * We don't want to stop adding payloads to our disk queue when we're uploading payloads. So we
@@ -369,66 +371,67 @@ class SegmentIntegration extends Integration<Void> {
       payloadsUploaded = payloadWriter.payloadCount;
 
 
-      BufferedReader in;
-      JsonReader jreader;
+      BufferedReader in = null;
+      JsonReader jreader = null;
 
       try {
         in = new BufferedReader(new InputStreamReader(connection.connection.getInputStream()));
         jreader = new JsonReader(in);
 
-        HashMap<String, HashMap<String, String>> responses = new HashMap<String, HashMap<String, String>>();
+        HashMap<String, HashMap<String, Object>> responses = new HashMap<String, HashMap<String, Object>>();
 
         jreader.beginObject();
         jreader.nextName();
         jreader.beginObject();
 
         while (jreader.hasNext()){
-          HashMap<String, String> response = new HashMap<String, String>();
+          HashMap<String, Object> response = new HashMap<String, Object>();
 
-          String name = jreader.nextName();
-//          Log.i("SampleApp", "Response name id: " + name);
+          String responseName = jreader.nextName();
           jreader.beginObject();
           while (jreader.hasNext()){
-            String debugName = jreader.nextName();
-            String debugString;
-            if (debugName.equals("intervene")) {
-              debugString = "" + jreader.nextBoolean();
+            String name = jreader.nextName();
+            if (name.equals("intervene")) {
+              response.put(name, jreader.nextBoolean());
+            } else if (name.equals("delaySecs")) {
+              response.put(name, jreader.nextDouble());
             } else {
-              debugString = jreader.nextString();
+              response.put(name, jreader.nextString());
             }
-            Log.i("SampleApp", "Read data: " + debugName + ": " + debugString);
-            response.put(debugName, debugString);
           }
           jreader.endObject();
 
-          responses.put(name, response);
+          responses.put(responseName, response);
         }
 
         jreader.endObject();
         jreader.endObject();
         jreader.close();
-
         in.close();
-
-        Log.i("SampleApp", "#//////////// Total Responses: " + responses.size());
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
         for (String responseID: responses.keySet()) {
           AttemptGoalPayload payload = attemptGoalPayloads.get(responseID);
-          HashMap<String, String> response = responses.get(responseID);
-          if (response.get("intervene").equals("true")) {
+          HashMap<String, Object> response = responses.get(responseID);
+          if ((boolean) response.get("intervene")) {
             Log.i("SampleApp", "Payload " + responseID + " should intervene");
 
+            Properties trackProperties = new Properties();
+            trackProperties.put("intervention", "attempt");
+            trackProperties.put("attemptId", responseID);
+            trackProperties.put("delaySecs", response.get("delaySecs"));
+            trackProperties.put("variant", response.get("variant"));
 
-            mainHandler.post(
+            mainHandler.postDelayed(
                     new Runnable() {
                       @Override
                       public void run() {
-                        payload.yesCallback.callback(response.get("variant"));
+                        Analytics.with(context).track("intervention", trackProperties);
+                        payload.yesCallback.callback((String) response.get("variant"));
                       }
-                    }
-            );
+                    },
+                    (long) ((double) response.get("delaySecs") * 1000));
           } else if (payload.noCallback != null) {
             Log.i("SampleApp", "Payload " + responseID + " should NOT intervene");
 
@@ -443,10 +446,18 @@ class SegmentIntegration extends Integration<Void> {
           }
           attemptGoalPayloads.remove(responseID);
         }
+
+//        Analytics.with(context).flush();
       } catch (Client.HTTPException e) {
         Log.i("SampleApp", "#### Failed to receive responses\n" + Log.getStackTraceString(e));
-      } catch (IOException e) {
+      } catch (FileNotFoundException e) {
         Log.i("SampleApp", "#### IO from server response failed\n" + Log.getStackTraceString(e));
+      } finally {
+        if (jreader != null)
+          jreader.close();
+
+        if (in != null)
+          in.close();
       }
 
       // Upload the payloads.
