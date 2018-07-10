@@ -62,6 +62,8 @@ public abstract class Integration<T> {
 
   public void attemptGoal(AttemptGoalPayload attemptGoal) {}
 
+  public void reportGoalResult(ReportGoalResultPayload report) {}
+
   /** @see Analytics#alias(String, com.segment.analytics.Options) */
   public void alias(AliasPayload alias) {}
 

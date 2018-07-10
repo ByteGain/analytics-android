@@ -10,6 +10,7 @@ import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Private;
@@ -164,6 +165,21 @@ abstract class IntegrationOperation {
     };
   }
 
+  static IntegrationOperation reportGoalResult(final ReportGoalResultPayload reportGoalResultPayload) {
+    return new IntegrationOperation() {
+      @Override
+      void run(String key, Integration<?> integration, ProjectSettings projectSettings) {
+        if (isIntegrationEnabled(reportGoalResultPayload.integrations(), key)) {
+          integration.reportGoalResult(reportGoalResultPayload);
+        }
+      }
+
+      @Override
+      public String toString() {
+        return reportGoalResultPayload.toString();
+      }
+    };
+  }
 
   static IntegrationOperation attemptGoal(final AttemptGoalPayload attemptGoalPayload){
     return new IntegrationOperation() {

@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.integrations.AttemptGoalPayload;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -71,6 +72,18 @@ public class MainActivity extends Activity {
     for (int i = 0; i < 1; i++) {
       Analytics.with(this).attemptGoal("multi", null, null, yesCallback, null);
     }
+  }
+
+  @OnClick(R.id.action_report_goal_success)
+  void onButtonReportGoalSuccess() {
+    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.success);
+
+  }
+
+  @OnClick(R.id.action_report_goal_failure)
+  void onButtonReportGoalFailure() {
+    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.failure);
+
   }
 
   @OnClick(R.id.action_track_a)

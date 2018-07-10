@@ -45,6 +45,18 @@
         android:layout_height="wrap_content" />
 
     <Button
+      android:id="@+id/action_report_goal_success"
+      android:text="Report Goal Success"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/action_report_goal_failure"
+        android:text="Report Goal Failure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
         android:id="@+id/action_track_a"
         android:text="@string/button_a"
         android:layout_width="match_parent"

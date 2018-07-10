@@ -58,6 +58,7 @@ import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
 import com.segment.analytics.integrations.Logger;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Private;
@@ -589,6 +590,42 @@ public class Analytics {
         });
   }
 
+  public void reportGoalResult(
+          final @NonNull String event,
+          final @Nullable Properties properties,
+          @Nullable final Options options,
+          @NonNull ReportGoalResultPayload.GoalResult result) {
+    assertNotShutdown();
+    if (isNullOrEmpty(event)) {
+      throw new IllegalArgumentException("event must not be null or empty.");
+    }
+    analyticsExecutor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+
+                final Options finalOptions;
+                if (options == null) {
+                  finalOptions = defaultOptions;
+                } else {
+                  finalOptions = options;
+                }
+
+                final Properties finalProperties;
+                if (properties == null) {
+                  finalProperties = EMPTY_PROPERTIES;
+                } else {
+                  finalProperties = properties;
+                }
+
+                ReportGoalResultPayload.Builder builder =
+                        new ReportGoalResultPayload.Builder().event(event).properties(finalProperties).result(result);
+
+                fillAndEnqueue(builder, finalOptions);
+              }
+            });
+  }
+
   public void attemptGoal(
           final @NonNull String event,
           final @Nullable Properties properties,
@@ -863,7 +900,11 @@ public class Analytics {
         operation = IntegrationOperation.group((GroupPayload) payload);
         break;
       case track:
-        operation = IntegrationOperation.track((TrackPayload) payload);
+        if (payload instanceof TrackPayload) {
+          operation = IntegrationOperation.track((TrackPayload) payload);
+        } else {
+          operation = IntegrationOperation.reportGoalResult((ReportGoalResultPayload) payload);
+        }
         break;
       case screen:
         operation = IntegrationOperation.screen((ScreenPayload) payload);
@@ -1151,8 +1192,6 @@ public class Analytics {
         throw new IllegalArgumentException("writeKey must not be null or empty.");
       }
       this.writeKey = writeKey;
-      Log.i("SampleApp","WriteKey: " + writeKey);
-
     }
 
     /**
