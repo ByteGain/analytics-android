@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Segment, Inc.
+ * Copyright (c) 2018 ByteGain, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,7 @@ public class AttemptGoalPayload extends BasePayload {
             @NonNull String anonymousId,
             @NonNull String event,
             @NonNull Map<String, Object> properties,
-            @NonNull YesCallback yesCallback,          // TODO: Change to @NonNull
+            @NonNull YesCallback yesCallback,
             @Nullable NoCallback noCallback) {
         super(Type.intervention, messageId, timestamp, context, integrations, userId, anonymousId);
         responseNumber += 1;
