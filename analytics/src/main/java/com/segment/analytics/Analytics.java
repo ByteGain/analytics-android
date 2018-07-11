@@ -49,12 +49,16 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.segment.analytics.integrations.AliasPayload;
+import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.BasePayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
 import com.segment.analytics.integrations.Logger;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Private;
@@ -448,6 +452,7 @@ public class Analytics {
     if (shutdown) {
       return;
     }
+
     analyticsExecutor.submit(
         new Runnable() {
           @Override
@@ -583,6 +588,81 @@ public class Analytics {
             fillAndEnqueue(builder, finalOptions);
           }
         });
+  }
+
+  public void reportGoalResult(
+          final @NonNull String event,
+          final @Nullable Properties properties,
+          @Nullable final Options options,
+          @NonNull ReportGoalResultPayload.GoalResult result) {
+    assertNotShutdown();
+    if (isNullOrEmpty(event)) {
+      throw new IllegalArgumentException("event must not be null or empty.");
+    }
+    analyticsExecutor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+
+                final Options finalOptions;
+                if (options == null) {
+                  finalOptions = defaultOptions;
+                } else {
+                  finalOptions = options;
+                }
+
+                final Properties finalProperties;
+                if (properties == null) {
+                  finalProperties = EMPTY_PROPERTIES;
+                } else {
+                  finalProperties = properties;
+                }
+
+                ReportGoalResultPayload.Builder builder =
+                        new ReportGoalResultPayload.Builder().event(event).properties(finalProperties).result(result);
+
+                fillAndEnqueue(builder, finalOptions);
+              }
+            });
+  }
+
+  public void attemptGoal(
+          final @NonNull String event,
+          final @Nullable Properties properties,
+          @Nullable final Options options,
+          @NonNull final AttemptGoalPayload.YesCallback yesCallback,
+          @Nullable final AttemptGoalPayload.NoCallback noCallback) {
+    assertNotShutdown();
+    if (isNullOrEmpty(event)) {
+      throw new IllegalArgumentException("event must not be null or empty.");
+    }
+
+    analyticsExecutor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+
+                final Options finalOptions;
+                if (options == null) {
+                  finalOptions = defaultOptions;
+                } else {
+                  finalOptions = options;
+                }
+
+                final Properties finalProperties;
+                if (properties == null) {
+                  finalProperties = EMPTY_PROPERTIES;
+                } else {
+                  finalProperties = properties;
+                }
+
+                AttemptGoalPayload.Builder builder =
+                        new AttemptGoalPayload.Builder().event(event).properties(finalProperties)
+                        .yesCallback(yesCallback).noCallback(noCallback);
+
+                fillAndEnqueue(builder, finalOptions);
+              }
+            });
   }
 
   /** @see #track(String, Properties, Options) */
@@ -786,10 +866,14 @@ public class Analytics {
     builder.context(contextCopy);
     builder.anonymousId(contextCopy.traits().anonymousId());
     builder.integrations(options.integrations());
+
     String userId = contextCopy.traits().userId();
+
     if (!isNullOrEmpty(userId)) {
       builder.userId(userId);
     }
+
+
     enqueue(builder.build());
   }
 
@@ -816,10 +900,17 @@ public class Analytics {
         operation = IntegrationOperation.group((GroupPayload) payload);
         break;
       case track:
-        operation = IntegrationOperation.track((TrackPayload) payload);
+        if (payload instanceof TrackPayload) {
+          operation = IntegrationOperation.track((TrackPayload) payload);
+        } else {
+          operation = IntegrationOperation.reportGoalResult((ReportGoalResultPayload) payload);
+        }
         break;
       case screen:
         operation = IntegrationOperation.screen((ScreenPayload) payload);
+        break;
+      case intervention:
+        operation = IntegrationOperation.attemptGoal((AttemptGoalPayload) payload);
         break;
       default:
         throw new AssertionError("unknown type " + payload.type());

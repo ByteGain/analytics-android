@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -39,6 +40,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.segment.analytics.Analytics;
+import com.segment.analytics.integrations.AttemptGoalPayload;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends Activity {
@@ -56,6 +60,30 @@ public class MainActivity extends Activity {
 
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
+  }
+
+  @OnClick(R.id.action_attempt_goal)
+  void onButtonAttemptGoalClicked() {
+
+    AttemptGoalPayload.YesCallback yesCallback = (str) -> {
+      Log.i("SampleApp", "YesCallback was called: " + str);
+    };
+
+    for (int i = 0; i < 1; i++) {
+      Analytics.with(this).attemptGoal("multi", null, null, yesCallback, null);
+    }
+  }
+
+  @OnClick(R.id.action_report_goal_success)
+  void onButtonReportGoalSuccess() {
+    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.success);
+
+  }
+
+  @OnClick(R.id.action_report_goal_failure)
+  void onButtonReportGoalFailure() {
+    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.failure);
+
   }
 
   @OnClick(R.id.action_track_a)

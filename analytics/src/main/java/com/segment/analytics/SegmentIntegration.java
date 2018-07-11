@@ -12,28 +12,37 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.util.JsonReader;
 import android.util.JsonWriter;
+import android.util.Log;
 import com.segment.analytics.integrations.AliasPayload;
+import com.segment.analytics.integrations.AttemptGoalPayload;
 import com.segment.analytics.integrations.BasePayload;
 import com.segment.analytics.integrations.GroupPayload;
 import com.segment.analytics.integrations.IdentifyPayload;
 import com.segment.analytics.integrations.Integration;
 import com.segment.analytics.integrations.Logger;
+import com.segment.analytics.integrations.ReportGoalResultPayload;
 import com.segment.analytics.integrations.ScreenPayload;
 import com.segment.analytics.integrations.TrackPayload;
 import com.segment.analytics.internal.Private;
 import com.segment.analytics.internal.Utils.AnalyticsThreadFactory;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -98,6 +107,12 @@ class SegmentIntegration extends Integration<Void> {
   private final Cartographer cartographer;
   private final ExecutorService networkExecutor;
   private final ScheduledExecutorService flushScheduler;
+
+  // Stores attemptGoalPayloads in order to reference callBacks
+  private final HashMap<String, AttemptGoalPayload> attemptGoalPayloads;
+  // Stores response properties from server after an AttemptGoal
+  private final HashMap<String, Properties> attemptProperties;
+
   /**
    * We don't want to stop adding payloads to our disk queue when we're uploading payloads. So we
    * upload payloads on a network executor instead.
@@ -201,6 +216,9 @@ class SegmentIntegration extends Integration<Void> {
     this.flushScheduler = Executors.newScheduledThreadPool(1, new AnalyticsThreadFactory());
     this.crypto = crypto;
 
+    this.attemptGoalPayloads = new HashMap<String, AttemptGoalPayload>();
+    this.attemptProperties = new HashMap<String, Properties>();
+
     segmentThread = new HandlerThread(SEGMENT_THREAD_NAME, THREAD_PRIORITY_BACKGROUND);
     segmentThread.start();
     handler = new SegmentDispatcherHandler(segmentThread.getLooper(), this);
@@ -231,6 +249,42 @@ class SegmentIntegration extends Integration<Void> {
   @Override
   public void track(TrackPayload track) {
     dispatchEnqueue(track);
+  }
+
+  @Override
+  public void reportGoalResult(ReportGoalResultPayload report) {
+    Properties reportProperties = new Properties();
+
+    if (attemptProperties.containsKey(report.event())) {
+      reportProperties.putAll(attemptProperties.remove(report.event()));
+    }
+
+    reportProperties.put("intervention", "result");
+    if (report.result() == ReportGoalResultPayload.GoalResult.success ||
+            report.result() == ReportGoalResultPayload.GoalResult.unsolicitedSuccess) {
+      reportProperties.put("result", "success");
+    } else {
+      reportProperties.put("result", "failure");
+    }
+
+    ReportGoalResultPayload.Builder builder = new ReportGoalResultPayload.Builder()
+            .event(report.event())
+            .properties(reportProperties)
+            .result(report.result())
+            .context(report.context())
+            .anonymousId(report.context().traits().anonymousId())
+            .integrations(report.integrations());
+
+    if (report.userId() != null)
+      builder.userId(report.userId());
+
+    dispatchEnqueue(builder.build());
+  }
+
+  @Override
+  public void attemptGoal(AttemptGoalPayload attempt) {
+    attemptGoalPayloads.put(attempt.getResponseID(), attempt);
+    dispatchEnqueue(attempt);
   }
 
   @Override
@@ -333,7 +387,7 @@ class SegmentIntegration extends Integration<Void> {
       return;
     }
 
-    logger.verbose("Uploading payloads in queue to Segment.");
+    logger.verbose("Uploading payloads in queue.");
     int payloadsUploaded = 0;
     Client.Connection connection = null;
     try {
@@ -351,15 +405,102 @@ class SegmentIntegration extends Integration<Void> {
       // Don't use the result of QueueFiles#forEach, since we may not upload the last element.
       payloadsUploaded = payloadWriter.payloadCount;
 
+      BufferedReader in = null;
+      JsonReader jreader = null;
+
+      try {
+        in = new BufferedReader(new InputStreamReader(connection.connection.getInputStream()));
+        jreader = new JsonReader(in);
+
+        HashMap<String, HashMap<String, Object>> responses = new HashMap<String, HashMap<String, Object>>();
+
+        jreader.beginObject();
+        jreader.nextName();
+        jreader.beginObject();
+
+        while (jreader.hasNext()){
+          HashMap<String, Object> response = new HashMap<String, Object>();
+
+          String responseName = jreader.nextName();
+          jreader.beginObject();
+          while (jreader.hasNext()){
+            String name = jreader.nextName();
+            if (name.equals("intervene")) {
+              response.put(name, jreader.nextBoolean());
+            } else if (name.equals("delaySecs")) {
+              response.put(name, jreader.nextDouble());
+            } else {
+              response.put(name, jreader.nextString());
+            }
+          }
+          jreader.endObject();
+
+          responses.put(responseName, response);
+        }
+
+        jreader.endObject();
+        jreader.endObject();
+
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        for (String responseID: responses.keySet()) {
+          AttemptGoalPayload payload = attemptGoalPayloads.get(responseID);
+          HashMap<String, Object> response = responses.get(responseID);
+
+          Properties trackProperties = new Properties();
+          trackProperties.put("intervention", "attempt");
+          trackProperties.put("attemptId", responseID);
+          trackProperties.put("delaySecs", response.get("delaySecs"));
+          trackProperties.put("variant", response.get("variant"));
+
+          attemptProperties.put(payload.event(), trackProperties);
+
+          if ((boolean) response.get("intervene")) {
+            mainHandler.postDelayed(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        Analytics.with(context).track("intervention", trackProperties);
+                        payload.yesCallback.callback((String) response.get("variant"));
+                      }
+                    },
+                    (long) ((double) response.get("delaySecs") * 1000));
+          } else if (payload.noCallback != null) {
+            mainHandler.post(
+                    new Runnable() {
+                      @Override
+                      public void run() {
+                        payload.noCallback.callback();
+                      }
+                    }
+            );
+          }
+          attemptGoalPayloads.remove(responseID);
+        }
+      } catch (Client.HTTPException e) {
+        Log.i("SampleApp", "Failed to receive responses\n" + Log.getStackTraceString(e));
+      } catch (FileNotFoundException e) {
+        Log.i("SampleApp", "IO from server response failed\n" + Log.getStackTraceString(e));
+      } finally {
+        if (jreader != null)
+          jreader.close();
+
+        if (in != null)
+          in.close();
+      }
+
       // Upload the payloads.
       connection.close();
+
     } catch (Client.HTTPException e) {
+      Log.i("SampleApp", "Caught HTTPException: " + Log.getStackTraceString(e));
       if (e.is4xx() && e.responseCode != 429) {
         // Simply log and proceed to remove the rejected payloads from the queue.
         logger.error(e, "Payloads were rejected by server. Marked for removal.");
         try {
           payloadQueue.remove(payloadsUploaded);
         } catch (IOException e1) {
+          Log.i("SampleApp", "Unable to remove " + payloadsUploaded + " payload(s) from queue. /////////////////////////////////////////");
           logger.error(e, "Unable to remove " + payloadsUploaded + " payload(s) from queue.");
         }
         return;
@@ -368,6 +509,7 @@ class SegmentIntegration extends Integration<Void> {
         return;
       }
     } catch (IOException e) {
+      Log.i("SampleApp", "Caught IOException: " + Log.getStackTraceString(e));
       logger.error(e, "Error while uploading payloads");
       return;
     } finally {

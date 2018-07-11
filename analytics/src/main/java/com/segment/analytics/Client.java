@@ -29,6 +29,8 @@ import static com.segment.analytics.internal.Utils.getInputStream;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;

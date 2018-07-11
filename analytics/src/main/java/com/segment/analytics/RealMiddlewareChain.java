@@ -1,6 +1,7 @@
 package com.segment.analytics;
 
 import android.support.annotation.NonNull;
+
 import com.segment.analytics.integrations.BasePayload;
 import java.util.List;
 
