@@ -47,8 +47,8 @@ def rename(dirpath, old_name, new_name, changelog_path):
 
 
 # do
-replace(".", "segment", "bytegain", [".java"], abspath("./changelog.txt"))
+replace(".", "segment", "bytegain", [".gradle", ".java", ".xml"], abspath("./changelog.txt"))
 rename(".", "segment", "bytegain", abspath("./changelog.txt"))
 # Undo
-#replace(".", "bytegain", "segment", [".java"], abspath("./changelog.txt"))
+#replace(".", "bytegain", "segment", [".gradle", ".java", ".xml"], abspath("./changelog.txt"))
 #rename(".", "bytegain", "segment", abspath("./changelog.txt"))

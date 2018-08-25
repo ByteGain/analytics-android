@@ -165,7 +165,8 @@ abstract class IntegrationOperation {
     };
   }
 
-  static IntegrationOperation reportGoalResult(final ReportGoalResultPayload reportGoalResultPayload) {
+  static IntegrationOperation reportGoalResult(
+      final ReportGoalResultPayload reportGoalResultPayload) {
     return new IntegrationOperation() {
       @Override
       void run(String key, Integration<?> integration, ProjectSettings projectSettings) {
@@ -181,7 +182,7 @@ abstract class IntegrationOperation {
     };
   }
 
-  static IntegrationOperation attemptGoal(final AttemptGoalPayload attemptGoalPayload){
+  static IntegrationOperation attemptGoal(final AttemptGoalPayload attemptGoalPayload) {
     return new IntegrationOperation() {
       @Override
       void run(String key, Integration<?> integration, ProjectSettings projectSettings) {

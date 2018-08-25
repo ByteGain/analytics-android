@@ -260,14 +260,15 @@ class SegmentIntegration extends Integration<Void> {
     }
 
     reportProperties.put("intervention", "result");
-    if (report.result() == ReportGoalResultPayload.GoalResult.success ||
-            report.result() == ReportGoalResultPayload.GoalResult.unsolicitedSuccess) {
+    if (report.result() == ReportGoalResultPayload.GoalResult.success
+        || report.result() == ReportGoalResultPayload.GoalResult.unsolicitedSuccess) {
       reportProperties.put("result", "success");
     } else {
       reportProperties.put("result", "failure");
     }
 
-    ReportGoalResultPayload.Builder builder = new ReportGoalResultPayload.Builder()
+    ReportGoalResultPayload.Builder builder =
+        new ReportGoalResultPayload.Builder()
             .event(report.event())
             .properties(reportProperties)
             .result(report.result())
@@ -275,8 +276,7 @@ class SegmentIntegration extends Integration<Void> {
             .anonymousId(report.context().traits().anonymousId())
             .integrations(report.integrations());
 
-    if (report.userId() != null)
-      builder.userId(report.userId());
+    if (report.userId() != null) builder.userId(report.userId());
 
     dispatchEnqueue(builder.build());
   }
@@ -412,18 +412,19 @@ class SegmentIntegration extends Integration<Void> {
         in = new BufferedReader(new InputStreamReader(connection.connection.getInputStream()));
         jreader = new JsonReader(in);
 
-        HashMap<String, HashMap<String, Object>> responses = new HashMap<String, HashMap<String, Object>>();
+        HashMap<String, HashMap<String, Object>> responses =
+            new HashMap<String, HashMap<String, Object>>();
 
         jreader.beginObject();
         jreader.nextName();
         jreader.beginObject();
 
-        while (jreader.hasNext()){
+        while (jreader.hasNext()) {
           HashMap<String, Object> response = new HashMap<String, Object>();
 
           String responseName = jreader.nextName();
           jreader.beginObject();
-          while (jreader.hasNext()){
+          while (jreader.hasNext()) {
             String name = jreader.nextName();
             if (name.equals("intervene")) {
               response.put(name, jreader.nextBoolean());
@@ -443,7 +444,7 @@ class SegmentIntegration extends Integration<Void> {
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
-        for (String responseID: responses.keySet()) {
+        for (String responseID : responses.keySet()) {
           AttemptGoalPayload payload = attemptGoalPayloads.get(responseID);
           HashMap<String, Object> response = responses.get(responseID);
 
@@ -457,23 +458,22 @@ class SegmentIntegration extends Integration<Void> {
 
           if ((boolean) response.get("intervene")) {
             mainHandler.postDelayed(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        Analytics.with(context).track("intervention", trackProperties);
-                        payload.yesCallback.callback((String) response.get("variant"));
-                      }
-                    },
-                    (long) ((double) response.get("delaySecs") * 1000));
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    Analytics.with(context).track("intervention", trackProperties);
+                    payload.yesCallback.callback((String) response.get("variant"));
+                  }
+                },
+                (long) ((double) response.get("delaySecs") * 1000));
           } else if (payload.noCallback != null) {
             mainHandler.post(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        payload.noCallback.callback();
-                      }
-                    }
-            );
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    payload.noCallback.callback();
+                  }
+                });
           }
           attemptGoalPayloads.remove(responseID);
         }
@@ -482,11 +482,9 @@ class SegmentIntegration extends Integration<Void> {
       } catch (FileNotFoundException e) {
         Log.i("SampleApp", "IO from server response failed\n" + Log.getStackTraceString(e));
       } finally {
-        if (jreader != null)
-          jreader.close();
+        if (jreader != null) jreader.close();
 
-        if (in != null)
-          in.close();
+        if (in != null) in.close();
       }
 
       // Upload the payloads.
@@ -500,7 +498,11 @@ class SegmentIntegration extends Integration<Void> {
         try {
           payloadQueue.remove(payloadsUploaded);
         } catch (IOException e1) {
-          Log.i("SampleApp", "Unable to remove " + payloadsUploaded + " payload(s) from queue. /////////////////////////////////////////");
+          Log.i(
+              "SampleApp",
+              "Unable to remove "
+                  + payloadsUploaded
+                  + " payload(s) from queue. /////////////////////////////////////////");
           logger.error(e, "Unable to remove " + payloadsUploaded + " payload(s) from queue.");
         }
         return;

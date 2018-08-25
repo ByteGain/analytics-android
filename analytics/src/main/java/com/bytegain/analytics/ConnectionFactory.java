@@ -32,7 +32,7 @@ public class ConnectionFactory {
   public HttpURLConnection upload(String writeKey) throws IOException {
 
     // TODO: Use js.bytegain.com when done testing. 10.0.2.2 is emulator's route to host's 127.0.0.1
-//    HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
+    //    HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
     HttpURLConnection connection = openConnection("http://10.0.2.2:5001/v1/batch");
 
     connection.setRequestProperty("Authorization", authorizationHeader(writeKey));

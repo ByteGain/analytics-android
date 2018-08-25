@@ -591,78 +591,84 @@ public class Analytics {
   }
 
   public void reportGoalResult(
-          final @NonNull String event,
-          final @Nullable Properties properties,
-          @Nullable final Options options,
-          @NonNull ReportGoalResultPayload.GoalResult result) {
+      final @NonNull String event,
+      final @Nullable Properties properties,
+      @Nullable final Options options,
+      @NonNull ReportGoalResultPayload.GoalResult result) {
     assertNotShutdown();
     if (isNullOrEmpty(event)) {
       throw new IllegalArgumentException("event must not be null or empty.");
     }
     analyticsExecutor.submit(
-            new Runnable() {
-              @Override
-              public void run() {
+        new Runnable() {
+          @Override
+          public void run() {
 
-                final Options finalOptions;
-                if (options == null) {
-                  finalOptions = defaultOptions;
-                } else {
-                  finalOptions = options;
-                }
+            final Options finalOptions;
+            if (options == null) {
+              finalOptions = defaultOptions;
+            } else {
+              finalOptions = options;
+            }
 
-                final Properties finalProperties;
-                if (properties == null) {
-                  finalProperties = EMPTY_PROPERTIES;
-                } else {
-                  finalProperties = properties;
-                }
+            final Properties finalProperties;
+            if (properties == null) {
+              finalProperties = EMPTY_PROPERTIES;
+            } else {
+              finalProperties = properties;
+            }
 
-                ReportGoalResultPayload.Builder builder =
-                        new ReportGoalResultPayload.Builder().event(event).properties(finalProperties).result(result);
+            ReportGoalResultPayload.Builder builder =
+                new ReportGoalResultPayload.Builder()
+                    .event(event)
+                    .properties(finalProperties)
+                    .result(result);
 
-                fillAndEnqueue(builder, finalOptions);
-              }
-            });
+            fillAndEnqueue(builder, finalOptions);
+          }
+        });
   }
 
   public void attemptGoal(
-          final @NonNull String event,
-          final @Nullable Properties properties,
-          @Nullable final Options options,
-          @NonNull final AttemptGoalPayload.YesCallback yesCallback,
-          @Nullable final AttemptGoalPayload.NoCallback noCallback) {
+      final @NonNull String event,
+      final @Nullable Properties properties,
+      @Nullable final Options options,
+      @NonNull final AttemptGoalPayload.YesCallback yesCallback,
+      @Nullable final AttemptGoalPayload.NoCallback noCallback) {
     assertNotShutdown();
     if (isNullOrEmpty(event)) {
       throw new IllegalArgumentException("event must not be null or empty.");
     }
 
     analyticsExecutor.submit(
-            new Runnable() {
-              @Override
-              public void run() {
+        new Runnable() {
+          @Override
+          public void run() {
 
-                final Options finalOptions;
-                if (options == null) {
-                  finalOptions = defaultOptions;
-                } else {
-                  finalOptions = options;
-                }
+            final Options finalOptions;
+            if (options == null) {
+              finalOptions = defaultOptions;
+            } else {
+              finalOptions = options;
+            }
 
-                final Properties finalProperties;
-                if (properties == null) {
-                  finalProperties = EMPTY_PROPERTIES;
-                } else {
-                  finalProperties = properties;
-                }
+            final Properties finalProperties;
+            if (properties == null) {
+              finalProperties = EMPTY_PROPERTIES;
+            } else {
+              finalProperties = properties;
+            }
 
-                AttemptGoalPayload.Builder builder =
-                        new AttemptGoalPayload.Builder().event(event).properties(finalProperties)
-                        .yesCallback(yesCallback).noCallback(noCallback);
+            AttemptGoalPayload.Builder builder =
+                new AttemptGoalPayload.Builder()
+                    .event(event)
+                    .properties(finalProperties)
+                    .yesCallback(yesCallback)
+                    .noCallback(noCallback);
 
-                fillAndEnqueue(builder, finalOptions);
-              }
-            });
+            fillAndEnqueue(builder, finalOptions);
+          }
+        });
   }
 
   /** @see #track(String, Properties, Options) */
@@ -872,7 +878,6 @@ public class Analytics {
     if (!isNullOrEmpty(userId)) {
       builder.userId(userId);
     }
-
 
     enqueue(builder.build());
   }

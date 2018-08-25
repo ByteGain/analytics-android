@@ -23,6 +23,6 @@
   ~ SOFTWARE.
   -->
 
-<manifest package="com.segment.analytics.wear">
+<manifest package="com.bytegain.analytics.wear">
   <application/>
 </manifest>

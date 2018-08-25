@@ -65,9 +65,10 @@ public class MainActivity extends Activity {
   @OnClick(R.id.action_attempt_goal)
   void onButtonAttemptGoalClicked() {
 
-    AttemptGoalPayload.YesCallback yesCallback = (str) -> {
-      Log.i("SampleApp", "YesCallback was called: " + str);
-    };
+    AttemptGoalPayload.YesCallback yesCallback =
+        (str) -> {
+          Log.i("SampleApp", "YesCallback was called: " + str);
+        };
 
     for (int i = 0; i < 1; i++) {
       Analytics.with(this).attemptGoal("multi", null, null, yesCallback, null);
@@ -76,14 +77,14 @@ public class MainActivity extends Activity {
 
   @OnClick(R.id.action_report_goal_success)
   void onButtonReportGoalSuccess() {
-    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.success);
-
+    Analytics.with(this)
+        .reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.success);
   }
 
   @OnClick(R.id.action_report_goal_failure)
   void onButtonReportGoalFailure() {
-    Analytics.with(this).reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.failure);
-
+    Analytics.with(this)
+        .reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.failure);
   }
 
   @OnClick(R.id.action_track_a)
