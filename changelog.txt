@@ -1,0 +1,748 @@
+./analytics-tests/src/main/java/com/segment/analytics/Utils.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced:   /** Create a {@link com.segment.analytics.Traits} with only a randomly generated anonymous ID. */
+	With:   /** Create a {@link com.bytegain.analytics.Traits} with only a randomly generated anonymous ID. */
+	Replaced:   /** Create a {@link com.segment.analytics.Traits} object with the given {@code userId}. */
+	With:   /** Create a {@link com.bytegain.analytics.Traits} object with the given {@code userId}. */
+	Replaced:   /** Create an {@link com.segment.analytics.AnalyticsContext} with the given {@code traits}. */
+	With:   /** Create an {@link com.bytegain.analytics.AnalyticsContext} with the given {@code traits}. */
+./analytics-tests/src/main/java/com/segment/analytics/test/AliasPayloadBuilder.java
+	Replaced: package com.segment.analytics.test;
+	With: package com.bytegain.analytics.test;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.Utils.createTraits;
+	With: import static com.bytegain.analytics.Utils.createTraits;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.Options;
+	With: import com.bytegain.analytics.Options;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.integrations.AliasPayload;
+	With: import com.bytegain.analytics.integrations.AliasPayload;
+./analytics-tests/src/main/java/com/segment/analytics/test/TrackPayloadBuilder.java
+	Replaced: package com.segment.analytics.test;
+	With: package com.bytegain.analytics.test;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.Utils.createTraits;
+	With: import static com.bytegain.analytics.Utils.createTraits;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.Options;
+	With: import com.bytegain.analytics.Options;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+./analytics-tests/src/main/java/com/segment/analytics/test/GroupPayloadBuilder.java
+	Replaced: package com.segment.analytics.test;
+	With: package com.bytegain.analytics.test;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.Utils.createTraits;
+	With: import static com.bytegain.analytics.Utils.createTraits;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.Options;
+	With: import com.bytegain.analytics.Options;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.integrations.GroupPayload;
+	With: import com.bytegain.analytics.integrations.GroupPayload;
+./analytics-tests/src/main/java/com/segment/analytics/test/IdentifyPayloadBuilder.java
+	Replaced: package com.segment.analytics.test;
+	With: package com.bytegain.analytics.test;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.Utils.createTraits;
+	With: import static com.bytegain.analytics.Utils.createTraits;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.Options;
+	With: import com.bytegain.analytics.Options;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.integrations.IdentifyPayload;
+	With: import com.bytegain.analytics.integrations.IdentifyPayload;
+./analytics-tests/src/main/java/com/segment/analytics/test/ScreenPayloadBuilder.java
+	Replaced: package com.segment.analytics.test;
+	With: package com.bytegain.analytics.test;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.Utils.createTraits;
+	With: import static com.bytegain.analytics.Utils.createTraits;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.Options;
+	With: import com.bytegain.analytics.Options;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+./analytics-wear/src/main/java/com/segment/analytics/WearScreenPayload.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics-wear/src/main/java/com/segment/analytics/WearPayload.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+./analytics-wear/src/main/java/com/segment/analytics/WearTrackPayload.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics-wear/src/main/java/com/segment/analytics/PhoneAnalyticsListenerService.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics-wear/src/main/java/com/segment/analytics/WearAnalytics.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+	Replaced:  * The counterpart to {@link com.segment.analytics.Analytics} for Android Wear. This class will
+	With:  * The counterpart to {@link com.bytegain.analytics.Analytics} for Android Wear. This class will
+	Replaced:    * @see com.segment.analytics.Analytics#track(String, Properties)
+	With:    * @see com.bytegain.analytics.Analytics#track(String, Properties)
+	Replaced:    * @see com.segment.analytics.Analytics#screen(String, String, Properties)
+	With:    * @see com.bytegain.analytics.Analytics#screen(String, String, Properties)
+./analytics-wear/src/main/java/com/segment/analytics/WearDispatcher.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.internal.Utils;
+	With: import com.bytegain.analytics.internal.Utils;
+./analytics-samples/analytics-sample/src/androidTest/java/com/segment/analytics/E2ETest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.runscope.MessageResponse;
+	With: import com.bytegain.analytics.runscope.MessageResponse;
+	Replaced: import com.segment.analytics.runscope.MessagesResponse;
+	With: import com.bytegain.analytics.runscope.MessagesResponse;
+	Replaced: import com.segment.analytics.runscope.RunscopeService;
+	With: import com.bytegain.analytics.runscope.RunscopeService;
+	Replaced: import com.segment.analytics.sample.MainActivity;
+	With: import com.bytegain.analytics.sample.MainActivity;
+	Replaced: import com.segment.analytics.sample.test.BuildConfig;
+	With: import com.bytegain.analytics.sample.test.BuildConfig;
+	Replaced: import com.segment.backo.Backo;
+	With: import com.bytegain.backo.Backo;
+./analytics-samples/analytics-sample/src/androidTest/java/com/segment/analytics/runscope/RunscopeService.java
+	Replaced: package com.segment.analytics.runscope;
+	With: package com.bytegain.analytics.runscope;
+./analytics-samples/analytics-sample/src/androidTest/java/com/segment/analytics/runscope/MessageResponse.java
+	Replaced: package com.segment.analytics.runscope;
+	With: package com.bytegain.analytics.runscope;
+./analytics-samples/analytics-sample/src/androidTest/java/com/segment/analytics/runscope/MessagesResponse.java
+	Replaced: package com.segment.analytics.runscope;
+	With: package com.bytegain.analytics.runscope;
+./analytics-samples/analytics-sample/src/main/java/com/segment/analytics/sample/SampleApp.java
+	Replaced: package com.segment.analytics.sample;
+	With: package com.bytegain.analytics.sample;
+	Replaced: import com.segment.analytics.Analytics;
+	With: import com.bytegain.analytics.Analytics;
+./analytics-samples/analytics-sample/src/main/java/com/segment/analytics/sample/MainActivity.java
+	Replaced: package com.segment.analytics.sample;
+	With: package com.bytegain.analytics.sample;
+	Replaced: import com.segment.analytics.Analytics;
+	With: import com.bytegain.analytics.Analytics;
+	Replaced: import com.segment.analytics.integrations.AttemptGoalPayload;
+	With: import com.bytegain.analytics.integrations.AttemptGoalPayload;
+	Replaced: import com.segment.analytics.integrations.ReportGoalResultPayload;
+	With: import com.bytegain.analytics.integrations.ReportGoalResultPayload;
+./analytics-samples/analytics-wear-sample/src/main/java/com/segment/analytics/sample/MainActivity.java
+	Replaced: package com.segment.analytics.sample;
+	With: package com.bytegain.analytics.sample;
+	Replaced: import com.segment.analytics.WearAnalytics;
+	With: import com.bytegain.analytics.WearAnalytics;
+./analytics/src/test/java/android/net/http/AndroidHttpClient.java
+./analytics/src/test/java/com/segment/analytics/PropertiesTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.Properties.Product;
+	With: import com.bytegain.analytics.Properties.Product;
+./analytics/src/test/java/com/segment/analytics/ProjectSettingsTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/GetAdvertisingIdTaskTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+./analytics/src/test/java/com/segment/analytics/TestUtils.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced:             com.segment.analytics.internal.Utils.parseISO8601Date("2010-01-01T12:00:00+01:00"))
+	With:             com.bytegain.analytics.internal.Utils.parseISO8601Date("2010-01-01T12:00:00+01:00"))
+./analytics/src/test/java/com/segment/analytics/ValueMapTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.TestUtils.PROJECT_SETTINGS_JSON_SAMPLE;
+	With: import static com.bytegain.analytics.TestUtils.PROJECT_SETTINGS_JSON_SAMPLE;
+	Replaced:               "Could not create instance of com.segment.analytics.ValueMapTest.AmplitudeSettings.\n"
+	With:               "Could not create instance of com.bytegain.analytics.ValueMapTest.AmplitudeSettings.\n"
+	Replaced:                   + "com.segment.analytics.ValueMapTest$AmplitudeSettings.<init>(java.util.Map)");
+	With:                   + "com.bytegain.analytics.ValueMapTest$AmplitudeSettings.<init>(java.util.Map)");
+./analytics/src/test/java/com/segment/analytics/IntegrationOperationTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.Integration;
+	With: import com.bytegain.analytics.integrations.Integration;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+./analytics/src/test/java/com/segment/analytics/AnalyticsTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.TestUtils.NoDescriptionMatcher;
+	With: import com.bytegain.analytics.TestUtils.NoDescriptionMatcher;
+	Replaced: import com.segment.analytics.integrations.AliasPayload;
+	With: import com.bytegain.analytics.integrations.AliasPayload;
+	Replaced: import com.segment.analytics.integrations.GroupPayload;
+	With: import com.bytegain.analytics.integrations.GroupPayload;
+	Replaced: import com.segment.analytics.integrations.IdentifyPayload;
+	With: import com.bytegain.analytics.integrations.IdentifyPayload;
+	Replaced: import com.segment.analytics.integrations.Integration;
+	With: import com.bytegain.analytics.integrations.Integration;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced: import com.segment.analytics.internal.Utils.AnalyticsNetworkExecutorService;
+	With: import com.bytegain.analytics.internal.Utils.AnalyticsNetworkExecutorService;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.NONE;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.NONE;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.VERBOSE;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.VERBOSE;
+	Replaced: import static com.segment.analytics.TestUtils.SynchronousExecutor;
+	With: import static com.bytegain.analytics.TestUtils.SynchronousExecutor;
+	Replaced: import static com.segment.analytics.TestUtils.grantPermission;
+	With: import static com.bytegain.analytics.TestUtils.grantPermission;
+	Replaced: import static com.segment.analytics.TestUtils.mockApplication;
+	With: import static com.bytegain.analytics.TestUtils.mockApplication;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import static com.segment.analytics.internal.Utils.DEFAULT_FLUSH_INTERVAL;
+	With: import static com.bytegain.analytics.internal.Utils.DEFAULT_FLUSH_INTERVAL;
+	Replaced: import static com.segment.analytics.internal.Utils.DEFAULT_FLUSH_QUEUE_SIZE;
+	With: import static com.bytegain.analytics.internal.Utils.DEFAULT_FLUSH_QUEUE_SIZE;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+./analytics/src/test/java/com/segment/analytics/Utils.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/CartographerTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/TraitsTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.Traits.Address;
+	With: import com.bytegain.analytics.Traits.Address;
+./analytics/src/test/java/com/segment/analytics/ClientTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/test/java/com/segment/analytics/StatsTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/SegmentIntegrationTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.NONE;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.NONE;
+	Replaced: import static com.segment.analytics.SegmentIntegration.MAX_QUEUE_SIZE;
+	With: import static com.bytegain.analytics.SegmentIntegration.MAX_QUEUE_SIZE;
+	Replaced: import static com.segment.analytics.SegmentIntegration.UTF_8;
+	With: import static com.bytegain.analytics.SegmentIntegration.UTF_8;
+	Replaced: import static com.segment.analytics.TestUtils.SynchronousExecutor;
+	With: import static com.bytegain.analytics.TestUtils.SynchronousExecutor;
+	Replaced: import static com.segment.analytics.TestUtils.TRACK_PAYLOAD;
+	With: import static com.bytegain.analytics.TestUtils.TRACK_PAYLOAD;
+	Replaced: import static com.segment.analytics.TestUtils.TRACK_PAYLOAD_JSON;
+	With: import static com.bytegain.analytics.TestUtils.TRACK_PAYLOAD_JSON;
+	Replaced: import static com.segment.analytics.TestUtils.mockApplication;
+	With: import static com.bytegain.analytics.TestUtils.mockApplication;
+	Replaced: import com.segment.analytics.Client.Connection;
+	With: import com.bytegain.analytics.Client.Connection;
+	Replaced: import com.segment.analytics.PayloadQueue.PersistentQueue;
+	With: import com.bytegain.analytics.PayloadQueue.PersistentQueue;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced: import com.segment.analytics.internal.Utils;
+	With: import com.bytegain.analytics.internal.Utils;
+./analytics/src/test/java/com/segment/analytics/AnalyticsContextTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.Utils.createContext;
+	With: import static com.bytegain.analytics.Utils.createContext;
+	Replaced: import com.segment.analytics.core.BuildConfig;
+	With: import com.bytegain.analytics.core.BuildConfig;
+./analytics/src/test/java/com/segment/analytics/BatchPayloadWriterTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/CryptoTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/MiddlewareTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.TestUtils.grantPermission;
+	With: import static com.bytegain.analytics.TestUtils.grantPermission;
+	Replaced: import com.segment.analytics.Analytics.Builder;
+	With: import com.bytegain.analytics.Analytics.Builder;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+./analytics/src/test/java/com/segment/analytics/QueueFileTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.QueueFile.HEADER_LENGTH;
+	With: import static com.bytegain.analytics.QueueFile.HEADER_LENGTH;
+	Replaced: import com.segment.analytics.QueueFile.Element;
+	With: import com.bytegain.analytics.QueueFile.Element;
+./analytics/src/test/java/com/segment/analytics/ValueMapCacheTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/LoggerTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+./analytics/src/test/java/com/segment/analytics/PayloadQueueTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/OptionsTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/test/java/com/segment/analytics/AnalyticsBuilderTest.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.Analytics.Builder;
+	With: import static com.bytegain.analytics.Analytics.Builder;
+	Replaced: import static com.segment.analytics.Analytics.WRITE_KEY_RESOURCE_IDENTIFIER;
+	With: import static com.bytegain.analytics.Analytics.WRITE_KEY_RESOURCE_IDENTIFIER;
+	Replaced: import static com.segment.analytics.TestUtils.mockApplication;
+	With: import static com.bytegain.analytics.TestUtils.mockApplication;
+	Replaced: import com.segment.analytics.core.BuildConfig;
+	With: import com.bytegain.analytics.core.BuildConfig;
+./analytics/src/test/java/com/segment/analytics/internal/UtilsTest.java
+	Replaced: package com.segment.analytics.internal;
+	With: package com.bytegain.analytics.internal;
+	Replaced: import static com.segment.analytics.internal.Utils.isConnected;
+	With: import static com.bytegain.analytics.internal.Utils.isConnected;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.transform;
+	With: import static com.bytegain.analytics.internal.Utils.transform;
+./analytics/src/test/java/com/segment/analytics/internal/Iso8601UtilsTest.java
+	Replaced: package com.segment.analytics.internal;
+	With: package com.bytegain.analytics.internal;
+./analytics/src/test/java/com/segment/analytics/integrations/TrackPayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.integrations.TrackPayload.EVENT_KEY;
+	With: import static com.bytegain.analytics.integrations.TrackPayload.EVENT_KEY;
+./analytics/src/test/java/com/segment/analytics/integrations/BasePayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import com.segment.analytics.integrations.BasePayload.Builder;
+	With: import com.bytegain.analytics.integrations.BasePayload.Builder;
+	Replaced: import com.segment.analytics.integrations.BasePayload.Channel;
+	With: import com.bytegain.analytics.integrations.BasePayload.Channel;
+	Replaced: import com.segment.analytics.integrations.BasePayload.Type;
+	With: import com.bytegain.analytics.integrations.BasePayload.Type;
+./analytics/src/test/java/com/segment/analytics/integrations/AliasPayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+./analytics/src/test/java/com/segment/analytics/integrations/IdentifyPayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+./analytics/src/test/java/com/segment/analytics/integrations/GroupPayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+./analytics/src/test/java/com/segment/analytics/integrations/ScreenPayloadTest.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+./analytics/src/main/java/com/segment/analytics/StatsSnapshot.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/Client.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.readFully;
+	With: import static com.bytegain.analytics.internal.Utils.readFully;
+	Replaced: import static com.segment.analytics.internal.Utils.getInputStream;
+	With: import static com.bytegain.analytics.internal.Utils.getInputStream;
+./analytics/src/main/java/com/segment/analytics/Stats.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+	Replaced: import com.segment.analytics.internal.Utils;
+	With: import com.bytegain.analytics.internal.Utils;
+./analytics/src/main/java/com/segment/analytics/SegmentIntegration.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.THREAD_PREFIX;
+	With: import static com.bytegain.analytics.internal.Utils.THREAD_PREFIX;
+	Replaced: import static com.segment.analytics.internal.Utils.closeQuietly;
+	With: import static com.bytegain.analytics.internal.Utils.closeQuietly;
+	Replaced: import static com.segment.analytics.internal.Utils.createDirectory;
+	With: import static com.bytegain.analytics.internal.Utils.createDirectory;
+	Replaced: import static com.segment.analytics.internal.Utils.isConnected;
+	With: import static com.bytegain.analytics.internal.Utils.isConnected;
+	Replaced: import static com.segment.analytics.internal.Utils.toISO8601Date;
+	With: import static com.bytegain.analytics.internal.Utils.toISO8601Date;
+	Replaced: import com.segment.analytics.integrations.AliasPayload;
+	With: import com.bytegain.analytics.integrations.AliasPayload;
+	Replaced: import com.segment.analytics.integrations.AttemptGoalPayload;
+	With: import com.bytegain.analytics.integrations.AttemptGoalPayload;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+	Replaced: import com.segment.analytics.integrations.GroupPayload;
+	With: import com.bytegain.analytics.integrations.GroupPayload;
+	Replaced: import com.segment.analytics.integrations.IdentifyPayload;
+	With: import com.bytegain.analytics.integrations.IdentifyPayload;
+	Replaced: import com.segment.analytics.integrations.Integration;
+	With: import com.bytegain.analytics.integrations.Integration;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+	Replaced: import com.segment.analytics.integrations.ReportGoalResultPayload;
+	With: import com.bytegain.analytics.integrations.ReportGoalResultPayload;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+	Replaced: import com.segment.analytics.internal.Utils.AnalyticsThreadFactory;
+	With: import com.bytegain.analytics.internal.Utils.AnalyticsThreadFactory;
+./analytics/src/main/java/com/segment/analytics/Middleware.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+./analytics/src/main/java/com/segment/analytics/QueueFile.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/AnalyticsContext.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.NullableConcurrentHashMap;
+	With: import static com.bytegain.analytics.internal.Utils.NullableConcurrentHashMap;
+	Replaced: import static com.segment.analytics.internal.Utils.createMap;
+	With: import static com.bytegain.analytics.internal.Utils.createMap;
+	Replaced: import static com.segment.analytics.internal.Utils.getDeviceId;
+	With: import static com.bytegain.analytics.internal.Utils.getDeviceId;
+	Replaced: import static com.segment.analytics.internal.Utils.getSystemService;
+	With: import static com.bytegain.analytics.internal.Utils.getSystemService;
+	Replaced: import static com.segment.analytics.internal.Utils.hasPermission;
+	With: import static com.bytegain.analytics.internal.Utils.hasPermission;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.isOnClassPath;
+	With: import static com.bytegain.analytics.internal.Utils.isOnClassPath;
+	Replaced: import com.segment.analytics.core.BuildConfig;
+	With: import com.bytegain.analytics.core.BuildConfig;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/Properties.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+./analytics/src/main/java/com/segment/analytics/IntegrationOperation.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.Options.ALL_INTEGRATIONS_KEY;
+	With: import static com.bytegain.analytics.Options.ALL_INTEGRATIONS_KEY;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.integrations.AliasPayload;
+	With: import com.bytegain.analytics.integrations.AliasPayload;
+	Replaced: import com.segment.analytics.integrations.AttemptGoalPayload;
+	With: import com.bytegain.analytics.integrations.AttemptGoalPayload;
+	Replaced: import com.segment.analytics.integrations.GroupPayload;
+	With: import com.bytegain.analytics.integrations.GroupPayload;
+	Replaced: import com.segment.analytics.integrations.IdentifyPayload;
+	With: import com.bytegain.analytics.integrations.IdentifyPayload;
+	Replaced: import com.segment.analytics.integrations.Integration;
+	With: import com.bytegain.analytics.integrations.Integration;
+	Replaced: import com.segment.analytics.integrations.ReportGoalResultPayload;
+	With: import com.bytegain.analytics.integrations.ReportGoalResultPayload;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/ProjectSettings.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/Traits.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.NullableConcurrentHashMap;
+	With: import static com.bytegain.analytics.internal.Utils.NullableConcurrentHashMap;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.toISO8601Date;
+	With: import static com.bytegain.analytics.internal.Utils.toISO8601Date;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+	Replaced:    * Private API, users should call {@link com.segment.analytics.Analytics#identify(String)}
+	With:    * Private API, users should call {@link com.bytegain.analytics.Analytics#identify(String)}
+./analytics/src/main/java/com/segment/analytics/Analytics.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.buffer;
+	With: import static com.bytegain.analytics.internal.Utils.buffer;
+	Replaced: import static com.segment.analytics.internal.Utils.closeQuietly;
+	With: import static com.bytegain.analytics.internal.Utils.closeQuietly;
+	Replaced: import static com.segment.analytics.internal.Utils.getInputStream;
+	With: import static com.bytegain.analytics.internal.Utils.getInputStream;
+	Replaced: import static com.segment.analytics.internal.Utils.getResourceString;
+	With: import static com.bytegain.analytics.internal.Utils.getResourceString;
+	Replaced: import static com.segment.analytics.internal.Utils.getSegmentSharedPreferences;
+	With: import static com.bytegain.analytics.internal.Utils.getSegmentSharedPreferences;
+	Replaced: import static com.segment.analytics.internal.Utils.hasPermission;
+	With: import static com.bytegain.analytics.internal.Utils.hasPermission;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.integrations.AliasPayload;
+	With: import com.bytegain.analytics.integrations.AliasPayload;
+	Replaced: import com.segment.analytics.integrations.AttemptGoalPayload;
+	With: import com.bytegain.analytics.integrations.AttemptGoalPayload;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+	Replaced: import com.segment.analytics.integrations.GroupPayload;
+	With: import com.bytegain.analytics.integrations.GroupPayload;
+	Replaced: import com.segment.analytics.integrations.IdentifyPayload;
+	With: import com.bytegain.analytics.integrations.IdentifyPayload;
+	Replaced: import com.segment.analytics.integrations.Integration;
+	With: import com.bytegain.analytics.integrations.Integration;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+	Replaced: import com.segment.analytics.integrations.ReportGoalResultPayload;
+	With: import com.bytegain.analytics.integrations.ReportGoalResultPayload;
+	Replaced: import com.segment.analytics.integrations.ScreenPayload;
+	With: import com.bytegain.analytics.integrations.ScreenPayload;
+	Replaced: import com.segment.analytics.integrations.TrackPayload;
+	With: import com.bytegain.analytics.integrations.TrackPayload;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+	Replaced: import com.segment.analytics.internal.Utils;
+	With: import com.bytegain.analytics.internal.Utils;
+	Replaced: import com.segment.analytics.internal.Utils.AnalyticsNetworkExecutorService;
+	With: import com.bytegain.analytics.internal.Utils.AnalyticsNetworkExecutorService;
+./analytics/src/main/java/com/segment/analytics/Options.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/RealMiddlewareChain.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.BasePayload;
+	With: import com.bytegain.analytics.integrations.BasePayload;
+./analytics/src/main/java/com/segment/analytics/Crypto.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/BooleanPreference.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/GetAdvertisingIdTask.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.integrations.Logger;
+	With: import com.bytegain.analytics.integrations.Logger;
+./analytics/src/main/java/com/segment/analytics/ConnectionFactory.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import com.segment.analytics.core.BuildConfig;
+	With: import com.bytegain.analytics.core.BuildConfig;
+./analytics/src/main/java/com/segment/analytics/Cartographer.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/PayloadQueue.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+./analytics/src/main/java/com/segment/analytics/ValueMap.java
+	Replaced: package com.segment.analytics;
+	With: package com.bytegain.analytics;
+	Replaced: import static com.segment.analytics.internal.Utils.getSegmentSharedPreferences;
+	With: import static com.bytegain.analytics.internal.Utils.getSegmentSharedPreferences;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.internal.Utils;
+	With: import com.bytegain.analytics.internal.Utils;
+./analytics/src/main/java/com/segment/analytics/internal/Iso8601Utils.java
+	Replaced: package com.segment.analytics.internal;
+	With: package com.bytegain.analytics.internal;
+./analytics/src/main/java/com/segment/analytics/internal/Utils.java
+	Replaced: package com.segment.analytics.internal;
+	With: package com.bytegain.analytics.internal;
+	Replaced:    * A {@link ThreadPoolExecutor} implementation by {@link com.segment.analytics.Analytics}
+	With:    * A {@link ThreadPoolExecutor} implementation by {@link com.bytegain.analytics.Analytics}
+./analytics/src/main/java/com/segment/analytics/internal/Private.java
+	Replaced: package com.segment.analytics.internal;
+	With: package com.bytegain.analytics.internal;
+./analytics/src/main/java/com/segment/analytics/integrations/ReportGoalResultPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+./analytics/src/main/java/com/segment/analytics/integrations/AttemptGoalPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/integrations/Integration.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import com.segment.analytics.Analytics;
+	With: import com.bytegain.analytics.Analytics;
+	Replaced: import com.segment.analytics.ValueMap;
+	With: import com.bytegain.analytics.ValueMap;
+	Replaced:    * @see Analytics#identify(String, com.segment.analytics.Traits, com.segment.analytics.Options)
+	With:    * @see Analytics#identify(String, com.bytegain.analytics.Traits, com.bytegain.analytics.Options)
+	Replaced:   /** @see Analytics#group(String, com.segment.analytics.Traits, com.segment.analytics.Options) */
+	With:   /** @see Analytics#group(String, com.bytegain.analytics.Traits, com.bytegain.analytics.Options) */
+	Replaced:    * @see Analytics#track(String, com.segment.analytics.Properties, com.segment.analytics.Options)
+	With:    * @see Analytics#track(String, com.bytegain.analytics.Properties, com.bytegain.analytics.Options)
+	Replaced:   /** @see Analytics#alias(String, com.segment.analytics.Options) */
+	With:   /** @see Analytics#alias(String, com.bytegain.analytics.Options) */
+	Replaced:    * @see Analytics#screen(String, String, com.segment.analytics.Properties,
+	With:    * @see Analytics#screen(String, String, com.bytegain.analytics.Properties,
+	Replaced:    *     com.segment.analytics.Options)
+	With:    *     com.bytegain.analytics.Options)
+./analytics/src/main/java/com/segment/analytics/integrations/BasePayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.immutableCopyOf;
+	With: import static com.bytegain.analytics.internal.Utils.immutableCopyOf;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.parseISO8601Date;
+	With: import static com.bytegain.analytics.internal.Utils.parseISO8601Date;
+	Replaced: import static com.segment.analytics.internal.Utils.toISO8601String;
+	With: import static com.bytegain.analytics.internal.Utils.toISO8601String;
+	Replaced: import com.segment.analytics.AnalyticsContext;
+	With: import com.bytegain.analytics.AnalyticsContext;
+	Replaced: import com.segment.analytics.ValueMap;
+	With: import com.bytegain.analytics.ValueMap;
+./analytics/src/main/java/com/segment/analytics/integrations/ScreenPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/integrations/IdentifyPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/integrations/Logger.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.DEBUG;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.DEBUG;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.INFO;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.INFO;
+	Replaced: import static com.segment.analytics.Analytics.LogLevel.VERBOSE;
+	With: import static com.bytegain.analytics.Analytics.LogLevel.VERBOSE;
+	Replaced: import com.segment.analytics.Analytics.LogLevel;
+	With: import com.bytegain.analytics.Analytics.LogLevel;
+./analytics/src/main/java/com/segment/analytics/integrations/AliasPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/integrations/TrackPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.Properties;
+	With: import com.bytegain.analytics.Properties;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+./analytics/src/main/java/com/segment/analytics/integrations/GroupPayload.java
+	Replaced: package com.segment.analytics.integrations;
+	With: package com.bytegain.analytics.integrations;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNull;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNull;
+	Replaced: import static com.segment.analytics.internal.Utils.assertNotNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.assertNotNullOrEmpty;
+	Replaced: import static com.segment.analytics.internal.Utils.isNullOrEmpty;
+	With: import static com.bytegain.analytics.internal.Utils.isNullOrEmpty;
+	Replaced: import com.segment.analytics.Traits;
+	With: import com.bytegain.analytics.Traits;
+	Replaced: import com.segment.analytics.internal.Private;
+	With: import com.bytegain.analytics.internal.Private;
+Renamed ./analytics-tests/src/main/java/com/{segment,bytegain}
+Renamed ./analytics-wear/src/main/java/com/{segment,bytegain}
+Renamed ./analytics-samples/analytics-sample/src/androidTest/java/com/{segment,bytegain}
+Renamed ./analytics-samples/analytics-sample/src/main/java/com/{segment,bytegain}
+Renamed ./analytics-samples/analytics-wear-sample/src/main/java/com/{segment,bytegain}
+Renamed ./analytics/src/test/java/com/{segment,bytegain}
+Renamed ./analytics/src/main/java/com/{segment,bytegain}
