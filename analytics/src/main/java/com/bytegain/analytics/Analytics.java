@@ -350,35 +350,37 @@ public class Analytics {
 
   @Private
   void trackAttributionInformation() {
-    BooleanPreference trackedAttribution =
-        new BooleanPreference(
-            getSegmentSharedPreferences(application, tag), TRACKED_ATTRIBUTION_KEY, false);
-    if (trackedAttribution.get()) {
-      return;
-    }
-
-    waitForAdvertisingId();
-
-    Client.Connection connection = null;
-    try {
-      connection = client.attribution();
-
-      // Write the request body.
-      Writer writer = new BufferedWriter(new OutputStreamWriter(connection.os));
-      cartographer.toJson(analyticsContext, writer);
-
-      // Read the response body.
-      Map<String, Object> map =
-          cartographer.fromJson(buffer(getInputStream(connection.connection)));
-      Properties properties = new Properties(map);
-
-      track("Install Attributed", properties);
-      trackedAttribution.set(true);
-    } catch (IOException e) {
-      logger.error(e, "Unable to track attribution information. Retrying on next launch.");
-    } finally {
-      closeQuietly(connection);
-    }
+    // ByteGain does not support this
+    return;
+//    BooleanPreference trackedAttribution =
+//        new BooleanPreference(
+//            getSegmentSharedPreferences(application, tag), TRACKED_ATTRIBUTION_KEY, false);
+//    if (trackedAttribution.get()) {
+//      return;
+//    }
+//
+//    waitForAdvertisingId();
+//
+//    Client.Connection connection = null;
+//    try {
+//      connection = client.attribution();
+//
+//      // Write the request body.
+//      Writer writer = new BufferedWriter(new OutputStreamWriter(connection.os));
+//      cartographer.toJson(analyticsContext, writer);
+//
+//      // Read the response body.
+//      Map<String, Object> map =
+//          cartographer.fromJson(buffer(getInputStream(connection.connection)));
+//      Properties properties = new Properties(map);
+//
+//      track("Install Attributed", properties);
+//      trackedAttribution.set(true);
+//    } catch (IOException e) {
+//      logger.error(e, "Unable to track attribution information. Retrying on next launch.");
+//    } finally {
+//      closeQuietly(connection);
+//    }
   }
 
   @Private
@@ -1485,31 +1487,32 @@ public class Analytics {
   private static final long SETTINGS_RETRY_INTERVAL = 1000 * 60; // 1 minute
 
   private ProjectSettings downloadSettings() {
-    try {
-      ProjectSettings projectSettings =
-          networkExecutor
-              .submit(
-                  new Callable<ProjectSettings>() {
-                    @Override
-                    public ProjectSettings call() throws Exception {
-                      Client.Connection connection = null;
-                      try {
-                        connection = client.fetchSettings();
-                        Map<String, Object> map = cartographer.fromJson(buffer(connection.is));
-                        return ProjectSettings.create(map);
-                      } finally {
-                        closeQuietly(connection);
-                      }
-                    }
-                  })
-              .get();
-      projectSettingsCache.set(projectSettings);
-      return projectSettings;
-    } catch (InterruptedException e) {
-      logger.error(e, "Thread interrupted while fetching settings.");
-    } catch (ExecutionException e) {
-      logger.error(e, "Unable to fetch settings. Retrying in %s ms.", SETTINGS_RETRY_INTERVAL);
-    }
+    // ByteGain does not support download of settings
+//    try {
+//      ProjectSettings projectSettings =
+//          networkExecutor
+//              .submit(
+//                  new Callable<ProjectSettings>() {
+//                    @Override
+//                    public ProjectSettings call() throws Exception {
+//                      Client.Connection connection = null;
+//                      try {
+//                        connection = client.fetchSettings();
+//                        Map<String, Object> map = cartographer.fromJson(buffer(connection.is));
+//                        return ProjectSettings.create(map);
+//                      } finally {
+//                        closeQuietly(connection);
+//                      }
+//                    }
+//                  })
+//              .get();
+//      projectSettingsCache.set(projectSettings);
+//      return projectSettings;
+//    } catch (InterruptedException e) {
+//      logger.error(e, "Thread interrupted while fetching settings.");
+//    } catch (ExecutionException e) {
+//      logger.error(e, "Unable to fetch settings. Retrying in %s ms.", SETTINGS_RETRY_INTERVAL);
+//    }
     return null;
   }
 

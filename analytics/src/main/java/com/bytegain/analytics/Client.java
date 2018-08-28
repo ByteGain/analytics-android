@@ -96,18 +96,22 @@ class Client {
   }
 
   Connection attribution() throws IOException {
-    HttpURLConnection connection = connectionFactory.attribution(writeKey);
-    return createPostConnection(connection);
+    // ByteGain does not support this
+    return null;
+//    HttpURLConnection connection = connectionFactory.attribution(writeKey);
+//    return createPostConnection(connection);
   }
 
   Connection fetchSettings() throws IOException {
-    HttpURLConnection connection = connectionFactory.projectSettings(writeKey);
-    int responseCode = connection.getResponseCode();
-    if (responseCode != HTTP_OK) {
-      connection.disconnect();
-      throw new IOException("HTTP " + responseCode + ": " + connection.getResponseMessage());
-    }
-    return createGetConnection(connection);
+    // ByteGain does not support this
+    return null;
+//    HttpURLConnection connection = connectionFactory.projectSettings(writeKey);
+//    int responseCode = connection.getResponseCode();
+//    if (responseCode != HTTP_OK) {
+//      connection.disconnect();
+//      throw new IOException("HTTP " + responseCode + ": " + connection.getResponseMessage());
+//    }
+//    return createGetConnection(connection);
   }
 
   /** Represents an HTTP exception thrown for unexpected/non 2xx response codes. */

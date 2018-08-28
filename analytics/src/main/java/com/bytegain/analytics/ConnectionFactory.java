@@ -12,6 +12,7 @@ import java.net.URL;
  */
 public class ConnectionFactory {
 
+  private static final boolean USE_LOCALHOST_SERVER = false;
   private static final int DEFAULT_READ_TIMEOUT_MILLIS = 20 * 1000; // 20s
   private static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 15 * 1000; // 15s
   static final String USER_AGENT = "analytics-android/" + BuildConfig.VERSION_NAME;
@@ -22,7 +23,9 @@ public class ConnectionFactory {
 
   /** Return a {@link HttpURLConnection} that reads JSON formatted project settings. */
   public HttpURLConnection projectSettings(String writeKey) throws IOException {
-    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
+    // ByteGain does not support this
+    return null;
+//    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
   }
 
   /**
@@ -30,10 +33,12 @@ public class ConnectionFactory {
    * https://api.segment.io/v1/import}.
    */
   public HttpURLConnection upload(String writeKey) throws IOException {
-
-    // TODO: Use js.bytegain.com when done testing. 10.0.2.2 is emulator's route to host's 127.0.0.1
-    //    HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
-    HttpURLConnection connection = openConnection("http://10.0.2.2:5001/v1/batch");
+    // 10.0.2.2 is emulator's route to host's 127.0.0.1
+    final String url = USE_LOCALHOST_SERVER ?
+            "http://10.0.2.2:5001/v1/batch" :
+            "https://js.bytegain.com/v1/batch";
+    HttpURLConnection connection = openConnection(url);
+    //  HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
 
     connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
     connection.setRequestProperty("Content-Encoding", "gzip");
@@ -47,12 +52,14 @@ public class ConnectionFactory {
    * https://mobile-service.segment.com/attribution}.
    */
   public HttpURLConnection attribution(String writeKey) throws IOException {
-    HttpURLConnection connection =
-        openConnection("https://mobile-service.segment.com/v1/attribution");
-    connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
-    connection.setRequestMethod("POST");
-    connection.setDoOutput(true);
-    return connection;
+    // ByteGain does not support this
+    return null;
+//    HttpURLConnection connection =
+//        openConnection("https://mobile-service.segment.com/v1/attribution");
+//    connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
+//    connection.setRequestMethod("POST");
+//    connection.setDoOutput(true);
+//    return connection;
   }
 
   /**
