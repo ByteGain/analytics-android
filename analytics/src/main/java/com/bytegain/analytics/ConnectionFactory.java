@@ -25,7 +25,7 @@ public class ConnectionFactory {
   public HttpURLConnection projectSettings(String writeKey) throws IOException {
     // ByteGain does not support this
     return null;
-//    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
+    //    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
   }
 
   /**
@@ -34,9 +34,8 @@ public class ConnectionFactory {
    */
   public HttpURLConnection upload(String writeKey) throws IOException {
     // 10.0.2.2 is emulator's route to host's 127.0.0.1
-    final String url = USE_LOCALHOST_SERVER ?
-            "http://10.0.2.2:5001/v1/batch" :
-            "https://js.bytegain.com/v1/batch";
+    final String url =
+        USE_LOCALHOST_SERVER ? "http://10.0.2.2:5001/v1/batch" : "https://js.bytegain.com/v1/batch";
     HttpURLConnection connection = openConnection(url);
     //  HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
 
@@ -54,12 +53,12 @@ public class ConnectionFactory {
   public HttpURLConnection attribution(String writeKey) throws IOException {
     // ByteGain does not support this
     return null;
-//    HttpURLConnection connection =
-//        openConnection("https://mobile-service.segment.com/v1/attribution");
-//    connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
-//    connection.setRequestMethod("POST");
-//    connection.setDoOutput(true);
-//    return connection;
+    //    HttpURLConnection connection =
+    //        openConnection("https://mobile-service.segment.com/v1/attribution");
+    //    connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
+    //    connection.setRequestMethod("POST");
+    //    connection.setDoOutput(true);
+    //    return connection;
   }
 
   /**
