@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 5.0.0 (Oct 1, 2018)
+===========================
+ * [New] Uses ByteGain servers, adding calls to query AI models
+
 Version 4.3.1 (Nov 28, 2017)
 =============================
 
