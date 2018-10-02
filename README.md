@@ -1,10 +1,10 @@
 analytics-android
 =================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.segment.analytics.android/analytics/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.segment.analytics.android/analytics)
-[![Javadocs](http://javadoc-badge.appspot.com/com.segment.analytics.android/analytics.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.segment.analytics.android/analytics)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.bytegain.analytics/analytics/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.bytegain.analytics/analytics)
+[![Javadocs](http://javadoc-badge.appspot.com/com.bytegain.analytics/analytics.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.bytegain.analytics/analytics)
 
-analytics-android is an Android client for [Segment](https://segment.com)
+analytics-android is an Android client for [ByteGain](https://bytegain.com)
 
 ## Documentation
 
@@ -30,6 +30,7 @@ WWWWWW||WWWWWW
 
 The MIT License (MIT)
 
+Copyright (c) 2018 ByteGain, Inc.
 Copyright (c) 2016 Segment, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
