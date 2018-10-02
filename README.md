@@ -8,11 +8,7 @@ analytics-android is an Android client for [ByteGain](https://bytegain.com)
 
 ## Documentation
 
-You can find usage documentation at [https://segment.com/libraries/android](https://segment.com/libraries/android).
-
-## Integrating with Segment
-
-Interested in integrating your service with us? Check out our [Partners page](https://segment.com/partners/) for more details.
+See analytics-sample for an example Android App.
 
 ## License
 
