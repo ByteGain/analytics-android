@@ -40,19 +40,19 @@
 
     <Button
         android:id="@+id/action_attempt_goal"
-        android:text="Attempt Goal"
+        android:text="@string/attempt_goal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
       android:id="@+id/action_report_goal_success"
-      android:text="Report Goal Success"
+      android:text="@string/report_goal_success"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/action_report_goal_failure"
-        android:text="Report Goal Failure"
+        android:text="@string/report_goal_failure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -77,7 +77,9 @@
         android:id="@+id/user_id"
         android:hint="@string/identify_user_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType=""
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/action_identify"
