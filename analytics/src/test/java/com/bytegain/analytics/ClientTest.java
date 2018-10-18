@@ -71,16 +71,17 @@ public class ClientTest {
 
     Client.Connection connection = client.upload();
     assertThat(connection.os).isNotNull();
-    assertThat(connection.is).isNull();
+    assertThat(connection.getIs()).isNotNull();
     assertThat(connection.connection.getResponseCode()).isEqualTo(200); // consume the response.
     RecordedRequestAssert.assertThat(server.takeRequest())
-        .hasRequestLine("POST /v1/import HTTP/1.1")
+        .hasRequestLine("POST /v1/batch HTTP/1.1")
         .containsHeader("User-Agent", ConnectionFactory.USER_AGENT)
         .containsHeader("Content-Type", "application/json")
         .containsHeader("Content-Encoding", "gzip")
         .containsHeader("Authorization", "Basic Zm9vOg==");
   }
 
+  /*** attribution is not supported by ByteGain
   @Test
   public void attribution() throws Exception {
     server.enqueue(new MockResponse());
@@ -95,6 +96,7 @@ public class ClientTest {
         .containsHeader("Content-Type", "application/json")
         .containsHeader("Authorization", "Basic Zm9vOg==");
   }
+   */
 
   @Test
   public void closingUploadConnectionClosesStreams() throws Exception {
@@ -181,6 +183,7 @@ public class ClientTest {
     verify(os).close();
   }
 
+  /*** ByteGain does not support fetchSettings
   @Test
   public void fetchSettings() throws Exception {
     server.enqueue(new MockResponse());
@@ -222,6 +225,7 @@ public class ClientTest {
     verify(mockConnection).disconnect();
     verify(is).close();
   }
+  */
 
   static class RecordedRequestAssert
       extends AbstractAssert<RecordedRequestAssert, RecordedRequest> {

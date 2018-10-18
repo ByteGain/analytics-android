@@ -21,12 +21,14 @@ public class ConnectionFactory {
     return "Basic " + Base64.encodeToString((writeKey + ":").getBytes(), Base64.NO_WRAP);
   }
 
-  /** Return a {@link HttpURLConnection} that reads JSON formatted project settings. */
+  /*
+   * Bytegain does not support this.
+   *
+   * Return a {@link HttpURLConnection} that reads JSON formatted project settings.
   public HttpURLConnection projectSettings(String writeKey) throws IOException {
-    // ByteGain does not support this
-    return null;
-    //    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
+    return openConnection("https://cdn-settings.segment.com/v1/projects/" + writeKey + "/settings");
   }
+   */
 
   /**
    * Return a {@link HttpURLConnection} that writes batched payloads to {@code
@@ -42,16 +44,16 @@ public class ConnectionFactory {
     connection.setRequestProperty("Authorization", authorizationHeader(writeKey));
     connection.setRequestProperty("Content-Encoding", "gzip");
     connection.setDoOutput(true);
-    //connection.setChunkedStreamingMode(0);
+    connection.setChunkedStreamingMode(0);
     return connection;
   }
 
-  /**
+  /*
+   * ByteGain does not support this.
+   *
    * Return a {@link HttpURLConnection} that writes gets attribution information from {@code
    * https://mobile-service.segment.com/attribution}.
-   */
   public HttpURLConnection attribution(String writeKey) throws IOException {
-    // ByteGain does not support this
     return null;
     //    HttpURLConnection connection =
     //        openConnection("https://mobile-service.segment.com/v1/attribution");
@@ -60,10 +62,11 @@ public class ConnectionFactory {
     //    connection.setDoOutput(true);
     //    return connection;
   }
+   */
 
   /**
-   * Configures defaults for connections opened with {@link #upload(String)}, {@link
-   * #attribution(String)} and {@link #projectSettings(String)}.
+   * Configures defaults for connections opened with {@link #upload(String)}, attribution, and
+   * projectSettings.
    */
   protected HttpURLConnection openConnection(String url) throws IOException {
     HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();

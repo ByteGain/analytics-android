@@ -45,8 +45,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -285,6 +287,7 @@ class SegmentIntegration extends Integration<Void> {
   public void attemptGoal(AttemptGoalPayload attempt) {
     attemptGoalPayloads.put(attempt.getResponseID(), attempt);
     dispatchEnqueue(attempt);
+    flush();
   }
 
   @Override
@@ -365,15 +368,22 @@ class SegmentIntegration extends Integration<Void> {
       return;
     }
 
-    networkExecutor.submit(
-        new Runnable() {
-          @Override
-          public void run() {
-            synchronized (flushLock) {
-              performFlush();
-            }
-          }
-        });
+    Future<Object> flushResult =
+        networkExecutor.submit(
+            new Runnable() {
+              @Override
+              public void run() {
+                synchronized (flushLock) {
+                  performFlush();
+                }
+              }
+            },
+            null);
+    // Wait for performFlush() to return
+    try {
+      flushResult.get();
+    } catch (InterruptedException | ExecutionException e) {
+    }
   }
 
   private boolean shouldFlush() {
@@ -409,7 +419,7 @@ class SegmentIntegration extends Integration<Void> {
       JsonReader jreader = null;
 
       try {
-        in = new BufferedReader(new InputStreamReader(connection.connection.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(connection.getIs()));
         jreader = new JsonReader(in);
 
         HashMap<String, HashMap<String, Object>> responses =
@@ -478,9 +488,9 @@ class SegmentIntegration extends Integration<Void> {
           attemptGoalPayloads.remove(responseID);
         }
       } catch (Client.HTTPException e) {
-        Log.i("SampleApp", "Failed to receive responses\n" + Log.getStackTraceString(e));
+        Log.i("Bytegain", "Failed to receive responses\n" + Log.getStackTraceString(e));
       } catch (FileNotFoundException e) {
-        Log.i("SampleApp", "IO from server response failed\n" + Log.getStackTraceString(e));
+        Log.i("Bytegain", "IO from server response failed\n" + Log.getStackTraceString(e));
       } finally {
         if (jreader != null) jreader.close();
 
@@ -491,7 +501,7 @@ class SegmentIntegration extends Integration<Void> {
       connection.close();
 
     } catch (Client.HTTPException e) {
-      Log.i("SampleApp", "Caught HTTPException: " + Log.getStackTraceString(e));
+      Log.i("Bytegain", "Caught HTTPException", e);
       if (e.is4xx() && e.responseCode != 429) {
         // Simply log and proceed to remove the rejected payloads from the queue.
         logger.error(e, "Payloads were rejected by server. Marked for removal.");
@@ -499,7 +509,7 @@ class SegmentIntegration extends Integration<Void> {
           payloadQueue.remove(payloadsUploaded);
         } catch (IOException e1) {
           Log.i(
-              "SampleApp",
+              "Bytegain",
               "Unable to remove "
                   + payloadsUploaded
                   + " payload(s) from queue. /////////////////////////////////////////");
@@ -511,7 +521,7 @@ class SegmentIntegration extends Integration<Void> {
         return;
       }
     } catch (IOException e) {
-      Log.i("SampleApp", "Caught IOException: " + Log.getStackTraceString(e));
+      Log.i("Bytegain", "Caught IOException: " + Log.getStackTraceString(e));
       logger.error(e, "Error while uploading payloads");
       return;
     } finally {

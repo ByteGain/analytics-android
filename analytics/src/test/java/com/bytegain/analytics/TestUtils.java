@@ -10,6 +10,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import android.app.Application;
+import android.support.annotation.NonNull;
+
 import com.bytegain.analytics.integrations.TrackPayload;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -17,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.AbstractExecutorService;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.Description;
@@ -189,6 +193,7 @@ public final class TestUtils {
     }
 
     @Override
+    @NonNull
     public List<Runnable> shutdownNow() {
       return Collections.emptyList();
     }
@@ -204,16 +209,24 @@ public final class TestUtils {
     }
 
     @Override
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+    public boolean awaitTermination(long timeout, @NonNull TimeUnit unit) throws InterruptedException {
       return false;
     }
 
     @Override
-    public void execute(Runnable command) {
+    public void execute(@NonNull Runnable command) {
       command.run();
     }
-  }
 
+    @Override
+    @NonNull
+    public <T> Future<T> submit(Runnable command, T result) {
+      command.run();
+      CompletableFuture<T> future = new CompletableFuture<T>();
+      future.complete(result);
+      return future;
+    }
+  }
 
   public static void grantPermission(final Application app, final String permission) {
     ShadowApplication shadowApp = Shadows.shadowOf(app);

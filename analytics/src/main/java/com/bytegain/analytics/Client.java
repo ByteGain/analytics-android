@@ -26,11 +26,11 @@ package com.bytegain.analytics;
 
 import static com.bytegain.analytics.internal.Utils.readFully;
 import static com.bytegain.analytics.internal.Utils.getInputStream;
-import static java.net.HttpURLConnection.HTTP_OK;
 
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,12 +48,13 @@ class Client {
     final OutputStream outputStream;
     // Clients may have opted out of gzip compression via a custom connection factory.
     String contentEncoding = connection.getRequestProperty("Content-Encoding");
+    connection.connect();
     if (TextUtils.equals("gzip", contentEncoding)) {
       outputStream = new GZIPOutputStream(connection.getOutputStream());
     } else {
       outputStream = connection.getOutputStream();
     }
-    return new Connection(connection, null, outputStream) {
+    return new Connection(connection, outputStream) {
       @Override
       public void close() throws IOException {
         try {
@@ -71,16 +72,6 @@ class Client {
           super.close();
           os.close();
         }
-      }
-    };
-  }
-
-  private static Connection createGetConnection(HttpURLConnection connection) throws IOException {
-    return new Connection(connection, getInputStream(connection), null) {
-      @Override
-      public void close() throws IOException {
-        super.close();
-        is.close();
       }
     };
   }
@@ -134,12 +125,18 @@ class Client {
 
   /**
    * Wraps an HTTP connection. Callers can either read from the connection via the {@link
-   * InputStream} or write to the connection via {@link OutputStream}.
+   * InputStream} or write to the connection via {@link OutputStream}. This wrapper seems to be to
+   * facilitate tests that use mocks. In normal operation, the input and output streams are those of
+   * the connection.
    */
   abstract static class Connection implements Closeable {
     final HttpURLConnection connection;
-    final InputStream is;
+    private final InputStream is;
     final OutputStream os;
+
+    Connection(HttpURLConnection connection, OutputStream os) {
+      this(connection, null, os);
+    }
 
     Connection(HttpURLConnection connection, InputStream is, OutputStream os) {
       if (connection == null) {
@@ -153,6 +150,20 @@ class Client {
     @Override
     public void close() throws IOException {
       connection.disconnect();
+    }
+
+    // Having a getter lets us postpone the call to getInputStream(), which has the side effect
+    // of firing off the HTTP request and closing the output stream.
+    public InputStream getIs() {
+      if (is != null) {
+        return is;
+      }
+      try {
+        return getInputStream(connection);
+      } catch (IOException ignored) {
+        Log.d("Client.Connection", "getIs() returning null due to: " + ignored);
+        return null;
+      }
     }
   }
 }

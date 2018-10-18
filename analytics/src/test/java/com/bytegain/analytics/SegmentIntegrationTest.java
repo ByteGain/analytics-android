@@ -27,20 +27,25 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import com.bytegain.analytics.Client.Connection;
 import com.bytegain.analytics.PayloadQueue.PersistentQueue;
 import com.bytegain.analytics.integrations.Logger;
 import com.bytegain.analytics.integrations.TrackPayload;
 import com.bytegain.analytics.internal.Utils;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import org.junit.After;
@@ -61,6 +66,7 @@ public class SegmentIntegrationTest {
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
   QueueFile queueFile;
+  List<ShadowLog.LogItem> expectedLog = new ArrayList<ShadowLog.LogItem>();
 
   private static Client.Connection mockConnection() {
     return mockConnection(mock(HttpURLConnection.class));
@@ -75,6 +81,20 @@ public class SegmentIntegrationTest {
     };
   }
 
+  private static class EmptyInputClientConnection extends Client.Connection {
+    public EmptyInputClientConnection() {
+      this(mock(OutputStream.class));
+    }
+
+    public EmptyInputClientConnection(OutputStream os) {
+      super(mock(HttpURLConnection.class), newEmptyBatchResponseInputStream(), os);
+    }
+  }
+
+  private static InputStream newEmptyBatchResponseInputStream() {
+    return new ByteArrayInputStream("{\"responses\":{}}".getBytes());
+  }
+
   @Before
   public void setUp() throws IOException {
     queueFile = new QueueFile(new File(folder.getRoot(), "queue-file"));
@@ -82,7 +102,7 @@ public class SegmentIntegrationTest {
 
   @After
   public void tearDown() {
-    assertThat(ShadowLog.getLogs()).isEmpty();
+    assertThat(ShadowLog.getLogs().toString()).isEqualTo(expectedLog.toString());
   }
 
   @Test
@@ -167,7 +187,7 @@ public class SegmentIntegrationTest {
   public void enqueueMaxTriggersFlush() throws IOException {
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     Client client = mock(Client.class);
-    Client.Connection connection = mockConnection();
+    Client.Connection connection = new EmptyInputClientConnection();
     when(client.upload()).thenReturn(connection);
     SegmentIntegration segmentIntegration =
         new SegmentBuilder() //
@@ -190,7 +210,7 @@ public class SegmentIntegrationTest {
   public void flushRemovesItemsFromQueue() throws IOException {
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     Client client = mock(Client.class);
-    when(client.upload()).thenReturn(mockConnection());
+    when(client.upload()).thenReturn(new EmptyInputClientConnection());
     SegmentIntegration segmentIntegration =
         new SegmentBuilder() //
             .client(client)
@@ -209,17 +229,20 @@ public class SegmentIntegrationTest {
   @Test
   public void flushSubmitsToExecutor() throws IOException {
     ExecutorService executor = spy(new SynchronousExecutor());
-    PayloadQueue payloadQueue = mock(PayloadQueue.class);
-    when(payloadQueue.size()).thenReturn(1);
-    SegmentIntegration dispatcher =
+    PayloadQueue payloadQueue = new PayloadQueue.MemoryQueue();
+    payloadQueue.add("non-empty".getBytes());
+    Client client = mock(Client.class);
+    when(client.upload()).thenReturn(new EmptyInputClientConnection());
+      SegmentIntegration dispatcher =
         new SegmentBuilder() //
+            .client(client)
             .payloadQueue(payloadQueue)
             .networkExecutor(executor)
             .build();
 
     dispatcher.submitFlush();
 
-    verify(executor).submit(any(Runnable.class));
+    verify(executor).submit(any(Runnable.class), any());
   }
 
   @Test
@@ -263,8 +286,8 @@ public class SegmentIntegrationTest {
     Client client = mock(Client.class);
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     queueFile.add(TRACK_PAYLOAD_JSON.getBytes());
-    HttpURLConnection urlConnection = mock(HttpURLConnection.class);
-    Client.Connection connection = mockConnection(urlConnection);
+    Client.Connection connection = new EmptyInputClientConnection();
+    HttpURLConnection urlConnection = connection.connection;
     when(client.upload()).thenReturn(connection);
     SegmentIntegration segmentIntegration =
         new SegmentBuilder() //
@@ -277,18 +300,26 @@ public class SegmentIntegrationTest {
     verify(urlConnection, times(2)).disconnect();
   }
 
+  private Client.HTTPException expectHttpException(int responseCode, String description) {
+    Client.HTTPException httpException = new Client.HTTPException(
+            responseCode, description, description.toLowerCase());
+    expectedLog.add(new ShadowLog.LogItem(
+            Log.INFO, "Bytegain", "Caught HTTPException", httpException));
+    return httpException;
+  }
+
   @Test
   public void removesRejectedPayloads() throws IOException {
     // todo: rewrite using mockwebserver.
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     Client client = mock(Client.class);
+    final IOException httpException = expectHttpException(400, "Bad Request");
     when(client.upload())
         .thenReturn(
-            new Connection(
-                mock(HttpURLConnection.class), mock(InputStream.class), mock(OutputStream.class)) {
+            new EmptyInputClientConnection() {
               @Override
               public void close() throws IOException {
-                throw new Client.HTTPException(400, "Bad Request", "bad request");
+                throw httpException;
               }
             });
     SegmentIntegration segmentIntegration =
@@ -311,14 +342,13 @@ public class SegmentIntegrationTest {
     // todo: rewrite using mockwebserver.
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     Client client = mock(Client.class);
+    final IOException httpException = expectHttpException(500, "Internal Server Error");
     when(client.upload())
         .thenReturn(
-            new Connection(
-                mock(HttpURLConnection.class), mock(InputStream.class), mock(OutputStream.class)) {
+            new EmptyInputClientConnection() {
               @Override
               public void close() throws IOException {
-                throw new Client.HTTPException(
-                    500, "Internal Server Error", "internal server error");
+                throw httpException;
               }
             });
     SegmentIntegration segmentIntegration =
@@ -341,16 +371,14 @@ public class SegmentIntegrationTest {
     // todo: rewrite using mockwebserver.
     PayloadQueue payloadQueue = new PayloadQueue.PersistentQueue(queueFile);
     Client client = mock(Client.class);
-    when(client.upload())
-        .thenReturn(
-            new Connection(
-                mock(HttpURLConnection.class), mock(InputStream.class), mock(OutputStream.class)) {
-              @Override
-              public void close() throws IOException {
-                throw new Client.HTTPException(
-                    429, "Too Many Requests", "too many requests");
-              }
-            });
+    final IOException httpException = expectHttpException(429, "Too Many Requests");
+    Client.Connection connection = new EmptyInputClientConnection() {
+      @Override
+      public void close() throws IOException {
+        throw httpException;
+      }
+    };
+    when(client.upload()).thenReturn(connection);
     SegmentIntegration segmentIntegration =
         new SegmentBuilder() //
             .client(client)
