@@ -25,21 +25,43 @@ def isReleaseBuild() {
 }
 
 def getReleaseRepositoryUrl() {
-  return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
-          : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+  if (hasProperty('RELEASE_REPOSITORY_URL')) {
+    return RELEASE_REPOSITORY_URL
+  }
+  if (System.getenv("RELEASE_REPOSITORY_URL") != "") {
+    return System.getenv("RELEASE_REPOSITORY_URL")
+  }
+  return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
 
 def getSnapshotRepositoryUrl() {
-  return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
-          : "https://oss.sonatype.org/content/repositories/snapshots/"
+  if (hasProperty('SNAPSHOT_REPOSITORY_URL')) {
+    return SNAPSHOT_REPOSITORY_URL
+  }
+  if (System.getenv("SNAPSHOT_REPOSITORY_URL") != "") {
+    return System.getenv("SNAPSHOT_REPOSITORY_URL")
+  }
+  return "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
 def getRepositoryUsername() {
-  return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+  if (hasProperty('NEXUS_USERNAME')) {
+    return NEXUS_USERNAME
+  }
+  if (System.getenv("NEXUS_USERNAME") != "") {
+    return System.getenv("NEXUS_USERNAME")
+  }
+  return ""
 }
 
 def getRepositoryPassword() {
-  return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+  if (hasProperty('NEXUS_PASSWORD')) {
+    return NEXUS_PASSWORD
+  }
+  if (System.getenv("NEXUS_PASSWORD") != "") {
+    return System.getenv("NEXUS_PASSWORD")
+  }
+  return ""
 }
 
 afterEvaluate { project ->
@@ -92,6 +114,7 @@ afterEvaluate { project ->
 
   signing {
     required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    useGpgCmd()
     sign configurations.archives
   }
 
