@@ -8,8 +8,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class SampleApp extends Application {
 
   // https://segment.com/segment-engineering/sources/android-test/settings/keys
-  //private static final String ANALYTICS_WRITE_KEY = "x7sPb4mmoHBesEwwJIa2XPOAGuSuALwk";  // bytegain devel only
-  private static final String ANALYTICS_WRITE_KEY = "YOUR_API_KEY_GOES_HERE";
+  //private static final String ANALYTICS_API_KEY = "x7sPb4mmoHBesEwwJIa2XPOAGuSuALwk";  // bytegain devel only
+  private static final String ANALYTICS_API_KEY = "YOUR_API_KEY_GOES_HERE";
 
   @Override
   public void onCreate() {
@@ -27,7 +27,7 @@ public class SampleApp extends Application {
 
     // Initialize a new instance of the Analytics client.
     Analytics.Builder builder =
-        new Analytics.Builder(this, ANALYTICS_WRITE_KEY)
+        new Analytics.Builder(this, ANALYTICS_API_KEY)
             .trackApplicationLifecycleEvents()
             .trackAttributionInformation()
             .recordScreenViews();

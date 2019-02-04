@@ -68,10 +68,17 @@ public class MainActivity extends Activity {
     AttemptGoalPayload.YesCallback yesCallback =
         (str) -> {
           Log.i("SampleApp", "YesCallback was called: " + str);
+          // Add code to request user's email address here.
+          // If the user provides the info, call
+          //   Analytics.with(this)
+          //      .reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.success);
+          // If the user declines, call
+          //   Analytics.with(this)
+          //      .reportGoalResult("multi", null, null, ReportGoalResultPayload.GoalResult.failure);
         };
 
     for (int i = 0; i < 1; i++) {
-      Analytics.with(this).attemptGoal("multi", null, null, yesCallback, null);
+      Analytics.with(this).attemptGoal("requestEmail", null, null, yesCallback, null);
     }
   }
 

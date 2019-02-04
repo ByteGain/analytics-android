@@ -10,6 +10,44 @@ analytics-android is an Android client for [ByteGain](https://bytegain.com)
 
 See analytics-sample for an example Android App.
 
+In your app's class that extends `android.app.Application`, initialize a `com.bytegain.analytics.Analytics` object:
+```import com.bytegain.analytics.Analytics;
+...
+  private static final String ANALYTICS_API_KEY = "YOUR_API_KEY_GOES_HERE";
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+
+    // Initialize a new instance of the Analytics client.
+    Analytics.Builder builder =
+        new Analytics.Builder(this, ANALYTICS_API_KEY)
+            .trackApplicationLifecycleEvents()
+            .trackAttributionInformation()
+            .recordScreenViews();
+
+    // Set the initialized instance as a globally accessible instance.
+    Analytics.setSingletonInstance(builder.build());
+
+    // Now anytime you call Analytics.with, the custom instance will be returned.
+    Analytics analytics = Analytics.with(this);
+```
+The above sets up automatic reporting of screen views and application life cycle events to ByteGain servers.
+
+To send additional event data to ByteGain servers, e.g., button clicks, modify your `android.app.Activity` subclass to add calls to the `track` method:
+```  @OnClick(R.id.action_track_a)
+  void onButtonAClicked() {
+    Analytics.with(this).track("Button A Clicked");
+  }
+
+  @OnClick(R.id.action_track_b)
+  void onButtonBClicked() {
+    Analytics.with(this).track("Button B Clicked");
+  }
+```
+
+The sample app has been run and tested using AndroidStudio v. 3.3 and gradlew version 4.6.
+
 ## License
 
 ```
