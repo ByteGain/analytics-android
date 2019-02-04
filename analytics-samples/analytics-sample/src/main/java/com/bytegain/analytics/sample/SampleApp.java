@@ -8,8 +8,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class SampleApp extends Application {
 
   // https://segment.com/segment-engineering/sources/android-test/settings/keys
-  //private static final String ANALYTICS_WRITE_KEY = "5m6gbdgho6";
-  private static final String ANALYTICS_WRITE_KEY = "x7sPb4mmoHBesEwwJIa2XPOAGuSuALwk";
+  //private static final String ANALYTICS_WRITE_KEY = "x7sPb4mmoHBesEwwJIa2XPOAGuSuALwk";  // bytegain devel only
+  private static final String ANALYTICS_WRITE_KEY = "YOUR_API_KEY_GOES_HERE";
 
   @Override
   public void onCreate() {
@@ -43,11 +43,11 @@ public class SampleApp extends Application {
     // If you need to know when integrations have been initialized, use the onIntegrationReady
     // listener.
     analytics.onIntegrationReady(
-        "Segment.io",
+        "ByteGain.com",
         new Analytics.Callback() {
           @Override
           public void onReady(Object instance) {
-            Log.d("Segment Sample", "Segment integration ready.");
+            Log.d("ByteGain Sample", "ByteGain integration ready.");
           }
         });
 
