@@ -50,7 +50,7 @@ To send additional event data to ByteGain servers, e.g., button clicks, modify y
 
 For more examples, see [analytics-samples/analytics-sample/src/main/java/com/bytegain/analytics/sample/MainActivity.java](./analytics-samples/analytics-sample/src/main/java/com/bytegain/analytics/sample/MainActivity.java).
 
-The sample app has been run and tested using AndroidStudio v. 3.3 and gradlew version 4.6.
+The sample app has been run and tested using AndroidStudio version 3.3 and gradlew version 4.6.
 
 ## License
 
