@@ -6,6 +6,10 @@ analytics-android
 
 analytics-android is an Android client for [ByteGain](https://bytegain.com)
 
+## Installation
+
+bg-analytics-android library is available from Maven: https://mvnrepository.com/artifact/com.bytegain.analytics/analytics
+
 ## Documentation
 
 See analytics-sample for an example Android App.
