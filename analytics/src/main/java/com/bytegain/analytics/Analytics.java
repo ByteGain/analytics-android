@@ -1180,6 +1180,8 @@ public class Analytics {
     private boolean trackApplicationLifecycleEvents = false;
     private boolean recordScreenViews = false;
     private boolean trackAttributionInformation = false;
+    private boolean testMode = false;
+    private int localServerPort = 0;
     private Crypto crypto;
 
     /** Start building a new {@link Analytics} instance. */
@@ -1368,6 +1370,18 @@ public class Analytics {
       return this;
     }
 
+    /** Tell the server to discard data rather than using it to train models. */
+    public Builder testMode() {
+      this.testMode = true;
+      return this;
+    }
+
+    /** Bytegain use only: use localhost:port as the server */
+    public Builder localServerPort(int localServerPort) {
+      this.localServerPort = localServerPort;
+      return this;
+    }
+
     /** Add a {@link Middleware} for intercepting messages. */
     public Builder middleware(Middleware middleware) {
       assertNotNull(middleware, "middleware");
@@ -1415,7 +1429,7 @@ public class Analytics {
         networkExecutor = new AnalyticsNetworkExecutorService();
       }
       if (connectionFactory == null) {
-        connectionFactory = new ConnectionFactory();
+        connectionFactory = new ConnectionFactory(testMode, localServerPort);
       }
       if (crypto == null) {
         crypto = Crypto.none();

@@ -34,7 +34,6 @@ public class ClientTest {
 
   @Rule public MockWebServer server = new MockWebServer();
   @Rule public TemporaryFolder folder = new TemporaryFolder();
-  private Client client;
   private Client mockClient;
   @Private HttpURLConnection mockConnection;
 
@@ -42,22 +41,10 @@ public class ClientTest {
   public void setUp() {
     mockConnection = mock(HttpURLConnection.class);
 
-    client =
-        new Client(
-            "foo",
-            new ConnectionFactory() {
-              @Override
-              protected HttpURLConnection openConnection(String url) throws IOException {
-                String path = Uri.parse(url).getPath();
-                URL mockServerURL = server.getUrl(path);
-                return super.openConnection(mockServerURL.toString());
-              }
-            });
-
     mockClient =
         new Client(
             "foo",
-            new ConnectionFactory() {
+            new ConnectionFactory(false, 0) {
               @Override
               protected HttpURLConnection openConnection(String url) throws IOException {
                 return mockConnection;
@@ -65,24 +52,64 @@ public class ClientTest {
             });
   }
 
+  private Client createClient(boolean testMode, int localServerPort) {
+    return new Client("foo", new ConnectionFactory(testMode, localServerPort) {
+      @Override
+      protected HttpURLConnection openConnection(String url) throws IOException {
+        String path = Uri.parse(url).getPath();
+        URL mockServerURL = server.getUrl(path);
+        return super.openConnection(mockServerURL.toString());
+      }
+    });
+  }
+
   @Test
-  public void upload() throws Exception {
+  public void uploadNotTestMode() throws Exception {
+    uploadTest(false);
+  }
+
+  @Test
+  public void uploadTestMode() throws Exception {
+    uploadTest(true);
+  }
+
+  public void uploadTest(boolean testMode) throws Exception {
     server.enqueue(new MockResponse());
 
+    Client client = createClient(testMode, 0);
     Client.Connection connection = client.upload();
     assertThat(connection.os).isNotNull();
     assertThat(connection.getIs()).isNotNull();
     assertThat(connection.connection.getResponseCode()).isEqualTo(200); // consume the response.
     RecordedRequestAssert.assertThat(server.takeRequest())
-        .hasRequestLine("POST /v1/batch HTTP/1.1")
-        .containsHeader("User-Agent", ConnectionFactory.USER_AGENT)
-        .containsHeader("Content-Type", "application/json")
-        .containsHeader("Content-Encoding", "gzip")
-        .containsHeader("Authorization", "Basic Zm9vOg==");
+            .hasRequestLine("POST /v1/batch HTTP/1.1")
+            .containsHeader("User-Agent", ConnectionFactory.USER_AGENT)
+            .containsHeader("Content-Type", "application/json")
+            .containsHeader("Content-Encoding", "gzip")
+            .containsHeader("Authorization", "Basic Zm9vOg==")
+            .containsHeader(ConnectionFactory.TEST_MODE_HEADER, testMode ? "true" : null);
+  }
+
+  @Test
+  public void testMode() throws Exception {
+    server.enqueue(new MockResponse());
+
+    Client client = createClient(true, 0);
+    Client.Connection connection = client.upload();
+    assertThat(connection.os).isNotNull();
+    assertThat(connection.getIs()).isNotNull();
+    assertThat(connection.connection.getResponseCode()).isEqualTo(200); // consume the response.
+    RecordedRequestAssert.assertThat(server.takeRequest())
+            .hasRequestLine("POST /v1/batch HTTP/1.1")
+            .containsHeader("User-Agent", ConnectionFactory.USER_AGENT)
+            .containsHeader("Content-Type", "application/json")
+            .containsHeader("Content-Encoding", "gzip")
+            .containsHeader("Authorization", "Basic Zm9vOg==")
+            .containsHeader(ConnectionFactory.TEST_MODE_HEADER, "true");
   }
 
   /*** attribution is not supported by ByteGain
-  @Test
+  //@Test
   public void attribution() throws Exception {
     server.enqueue(new MockResponse());
 
@@ -238,13 +265,21 @@ public class ClientTest {
       super(actual, RecordedRequestAssert.class);
     }
 
+    /** When expectedHeader is null, the named header must be absent.*/
     public RecordedRequestAssert containsHeader(String name, String expectedHeader) {
       isNotNull();
       String actualHeader = actual.getHeader(name);
-      Assertions.assertThat(actualHeader)
-          .overridingErrorMessage(
-              "Expected header <%s> to be <%s> but was <%s>.", name, expectedHeader, actualHeader)
-          .isEqualTo(expectedHeader);
+      if (expectedHeader == null) {
+        Assertions.assertThat(actualHeader)
+                .overridingErrorMessage(
+                        "Expected header <%s> to be null but was <%s>", name, actualHeader)
+                .isNull();
+      } else {
+        Assertions.assertThat(actualHeader)
+                .overridingErrorMessage(
+                        "Expected header <%s> to be <%s> but was <%s>.", name, expectedHeader, actualHeader)
+                .isEqualTo(expectedHeader);
+      }
       return this;
     }
 

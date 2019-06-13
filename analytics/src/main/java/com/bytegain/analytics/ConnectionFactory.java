@@ -1,10 +1,12 @@
 package com.bytegain.analytics;
 
 import android.util.Base64;
+import android.util.Log;
 import com.bytegain.analytics.core.BuildConfig;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 /**
  * Abstraction to customize how connections are created. This is can be used to point our SDK at
@@ -12,10 +14,17 @@ import java.net.URL;
  */
 public class ConnectionFactory {
 
-  private static final boolean USE_LOCALHOST_SERVER = false;
+  public static final String TEST_MODE_HEADER = "X-ByteGainTestMode";
   private static final int DEFAULT_READ_TIMEOUT_MILLIS = 20 * 1000; // 20s
   private static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 15 * 1000; // 15s
   static final String USER_AGENT = "analytics-android/" + BuildConfig.VERSION_NAME;
+  private final boolean testMode;
+  private final int localServerPort;
+
+  public ConnectionFactory(boolean testMode, int localServerPort) {
+    this.testMode = testMode;
+    this.localServerPort = localServerPort;
+  }
 
   private String authorizationHeader(String writeKey) {
     return "Basic " + Base64.encodeToString((writeKey + ":").getBytes(), Base64.NO_WRAP);
@@ -36,8 +45,10 @@ public class ConnectionFactory {
    */
   public HttpURLConnection upload(String writeKey) throws IOException {
     // 10.0.2.2 is emulator's route to host's 127.0.0.1
+    final String localUrl = String.format(Locale.US, "http://10.0.2.2:%d/v1/batch", localServerPort);
     final String url =
-        USE_LOCALHOST_SERVER ? "http://10.0.2.2:5001/v1/batch" : "https://js.bytegain.com/v1/batch";
+        localServerPort != 0 ? localUrl : "https://js.bytegain.com/v1/batch";
+    Log.i("ConnectionFactory", "localUrl is " + localUrl);
     HttpURLConnection connection = openConnection(url);
     //  HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
 
@@ -74,6 +85,9 @@ public class ConnectionFactory {
     connection.setReadTimeout(DEFAULT_READ_TIMEOUT_MILLIS);
     connection.setRequestProperty("Content-Type", "application/json");
     connection.setRequestProperty("User-Agent", USER_AGENT);
+    if (testMode) {
+      connection.setRequestProperty(TEST_MODE_HEADER, "true");
+    }
     connection.setDoInput(true);
     return connection;
   }
