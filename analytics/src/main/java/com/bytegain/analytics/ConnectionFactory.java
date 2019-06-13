@@ -48,7 +48,6 @@ public class ConnectionFactory {
     final String localUrl = String.format(Locale.US, "http://10.0.2.2:%d/v1/batch", localServerPort);
     final String url =
         localServerPort != 0 ? localUrl : "https://js.bytegain.com/v1/batch";
-    Log.i("ConnectionFactory", "localUrl is " + localUrl);
     HttpURLConnection connection = openConnection(url);
     //  HttpURLConnection connection = openConnection("https://api.segment.io/v1/import");
 
