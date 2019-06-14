@@ -29,7 +29,7 @@ public class SampleApp extends Application {
     Analytics.Builder builder =
         new Analytics.Builder(this, ANALYTICS_API_KEY)
 //            .testMode()
-//            .localServerPort(5001)
+//            .localServerPort(5001)  // for ByteGain use only
             .trackApplicationLifecycleEvents()
             .trackAttributionInformation()
             .recordScreenViews();
