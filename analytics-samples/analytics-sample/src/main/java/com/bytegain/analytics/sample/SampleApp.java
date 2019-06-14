@@ -28,6 +28,8 @@ public class SampleApp extends Application {
     // Initialize a new instance of the Analytics client.
     Analytics.Builder builder =
         new Analytics.Builder(this, ANALYTICS_API_KEY)
+//            .testMode()
+//            .localServerPort(5001)  // for ByteGain use only
             .trackApplicationLifecycleEvents()
             .trackAttributionInformation()
             .recordScreenViews();

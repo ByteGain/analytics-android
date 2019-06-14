@@ -19,6 +19,5 @@ dependencies {
   implementation project(':analytics-wear')
   // TODO: Update this dependency alongside the GPS dependency in analytics-wear.
   //noinspection GradleDependency
-  implementation 'com.google.android.support:wearable:2.4.0'
   implementation 'com.google.android.gms:play-services-wearable:16.0.1'
 }
