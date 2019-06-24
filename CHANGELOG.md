@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 5.1.0 (Jun 24, 2018)
+===========================
+ * [New] Adds test mode to tell server to ignore data for training purposes.
+
 Version 5.0.0 (Oct 1, 2018)
 ===========================
  * [New] Uses ByteGain servers, adding calls to query AI models
